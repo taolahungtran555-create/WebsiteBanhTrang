@@ -4,9 +4,7 @@ import { notFound } from "next/navigation";
 
 // For real environment, params would be fetched from DB.
 export async function generateMetadata(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  { params }: { params: any },
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  { params }: { params: Promise<{ slug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
