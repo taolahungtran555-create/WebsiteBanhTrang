@@ -109,10 +109,17 @@ export default function Footer() {
         </div>
 
         <div
-          className="border-t pt-6 text-center text-xs"
+          className="border-t pt-6 flex flex-col md:flex-row items-center justify-between text-xs"
           style={{ borderColor: '#374151', color: '#6b7280', fontFamily: 'Inter, sans-serif' }}
         >
-          © {new Date().getFullYear()} Bánh Tráng Trộn Ngon Cần Thơ. Tất cả quyền được bảo lưu.
+          <div>
+            © {new Date().getFullYear()} Bánh Tráng Trộn Ngon Cần Thơ. Tất cả quyền được bảo lưu.
+          </div>
+          <div className="mt-4 md:mt-0">
+            <Link href="/admin/login" className="hover:text-white transition-colors" aria-label="Admin Login">
+              Đăng nhập Quản trị viên
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
