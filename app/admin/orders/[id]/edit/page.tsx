@@ -4,8 +4,9 @@ import OrderForm from '../../OrderForm';
 
 export const dynamic = 'force-dynamic';
 
-export default async function EditOrderPage({ params }: { params: { id: string } }) {
-  const id = parseInt(params.id);
+export default async function EditOrderPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: idParam } = await params;
+  const id = parseInt(idParam);
 
   if (isNaN(id)) {
     notFound();
