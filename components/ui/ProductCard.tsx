@@ -19,7 +19,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       <div className="relative overflow-hidden h-52">
         <img
-          src={product.imageUrl}
+          src={product.imageUrl || 'https://images.unsplash.com/photo-1660579384185-5d9cc8d5bb69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400'}
           alt={`Hình ảnh ${product.name}`}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />

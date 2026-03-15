@@ -1,0 +1,3 @@
+{
+  "buildCommand": "rm -f prisma.config.ts && prisma generate && next build"
+}
