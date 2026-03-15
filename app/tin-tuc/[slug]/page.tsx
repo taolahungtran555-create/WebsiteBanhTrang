@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 // For real environment, params would be fetched from DB.
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: any,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
@@ -23,7 +23,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPost({ params }: any) {
   const { slug } = await params;
   
   if (!slug) notFound();
