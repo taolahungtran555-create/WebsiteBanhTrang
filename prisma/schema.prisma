@@ -12,7 +12,7 @@ model MenuItem {
   name        String
   description String
   price       Float
-  imageUrl    String   // Cloudinary URL
+  imageUrl    String
   category    String
   slug        String   @unique
   createdAt   DateTime @default(now())
@@ -23,8 +23,8 @@ model Post {
   title       String
   slug        String   @unique
   excerpt     String
-  content     String   // Markdown hoặc HTML
-  coverImage  String   // Cloudinary URL
+  content     String
+  coverImage  String
   tags        String[]
   publishedAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
