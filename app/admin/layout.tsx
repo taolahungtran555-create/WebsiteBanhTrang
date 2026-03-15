@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LayoutDashboard, ShoppingBag, FileText, Home } from "lucide-react";
+import LogoutButton from "./LogoutButton";
 
 export default function AdminLayout({
   children,
@@ -41,7 +42,7 @@ export default function AdminLayout({
           </Link>
         </nav>
 
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-gray-200 space-y-1">
           <Link
             href="/"
             className="flex items-center gap-3 px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 font-medium transition-colors"
@@ -49,6 +50,7 @@ export default function AdminLayout({
             <Home size={20} />
             Quay lại Website
           </Link>
+          <LogoutButton />
         </div>
       </aside>
 
