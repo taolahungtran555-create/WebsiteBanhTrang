@@ -15,31 +15,7 @@ model MenuItem {
   imageUrl    String
   category    String
   slug        String   @unique
-  createdAt   DateTime    @default(now())
-  orderItems  OrderItem[]
-}
-
-model Order {
-  id              Int         @id @default(autoincrement())
-  customerName    String
-  customerPhone   String
-  customerAddress String?
-  status          String      @default("PENDING") // PENDING, PROCESSING, COMPLETED, CANCELLED
-  totalAmount     Float
-  note            String?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  orderItems      OrderItem[]
-}
-
-model OrderItem {
-  id         Int      @id @default(autoincrement())
-  orderId    Int
-  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  menuItemId Int
-  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
-  quantity   Int
-  price      Float    // Price at the time of order
+  createdAt   DateTime @default(now())
 }
 
 model Post {

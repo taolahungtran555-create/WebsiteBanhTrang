@@ -20,17 +20,6 @@ export default function AdminMenuGrid() {
           <p className="text-sm text-gray-500">Quản lý danh sách thực đơn, giá cả và phân loại món ăn.</p>
         </Link>
 
-        <Link href="/admin/orders" className="group relative bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 overflow-hidden hover:-translate-y-1">
-          <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-            <ChevronRight className="text-gray-400" />
-          </div>
-          <div className="w-14 h-14 rounded-xl bg-orange-50 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-[#FE5200] transition-all duration-300">
-            <ShoppingCart className="h-7 w-7 text-[#FE5200] group-hover:text-white transition-colors" />
-          </div>
-          <h4 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'Poppins, sans-serif' }}>Đơn hàng (Orders)</h4>
-          <p className="text-sm text-gray-500">Xử lý các đơn đặt hàng mới, cập nhật trạng thái đơn.</p>
-        </Link>
-
         <Link href="/admin/posts" className="group relative bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 overflow-hidden hover:-translate-y-1">
           <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
             <ChevronRight className="text-gray-400" />
