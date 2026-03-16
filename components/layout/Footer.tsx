@@ -70,6 +70,7 @@ export default function Footer() {
                 { href: '/menu', label: 'Thực Đơn' },
                 { href: '/tin-tuc', label: 'Tin Tức' },
                 { href: '/lien-he', label: 'Liên Hệ' },
+                { href: '/admin', label: 'Quản Trị' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link

@@ -19,7 +19,7 @@ export default function BlogCard({ post }: BlogCardProps) {
     >
       <div className="relative overflow-hidden h-48">
         <img
-          src={post.coverImage}
+          src={post.coverImage || "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"}
           alt={post.title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
