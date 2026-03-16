@@ -1,57 +1,55 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Upload, Image as ImageIcon, Loader2 } from 'lucide-react';
-import { createProduct, updateProduct } from './actions';
+import { createPost, updatePost } from './actions';
 import Image from 'next/image';
 
-type MenuItem = {
+type Post = {
   id?: number;
-  name: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  category: string;
+  title: string;
   slug: string;
+  excerpt: string;
+  content: string;
+  coverImage: string;
+  tags: string[];
 };
 
-export default function ProductForm({ initialData }: { initialData?: MenuItem }) {
+export default function PostForm({ initialData }: { initialData?: Post }) {
   const isEditing = !!initialData;
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState('');
-  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || '');
+  const [coverImage, setCoverImage] = useState(initialData?.coverImage || '');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
-    if (!imageUrl) {
-      setError('Vui lòng tải lên hình ảnh sản phẩm.');
+    if (!coverImage) {
+      setError('Vui lòng tải lên ảnh bìa.');
       setIsLoading(false);
       return;
     }
 
     const formData = new FormData(e.currentTarget);
-    formData.set('imageUrl', imageUrl);
+    formData.set('coverImage', coverImage);
 
     try {
       let res;
       if (isEditing && initialData?.id) {
-        res = await updateProduct(initialData.id, formData);
+        res = await updatePost(initialData.id, formData);
       } else {
-        res = await createProduct(formData);
+        res = await createPost(formData);
       }
 
       if (res?.error) {
         setError(res.error);
         setIsLoading(false);
       }
-    } catch (err) {
+    } catch {
       setError('Đã xảy ra lỗi không xác định.');
       setIsLoading(false);
     }
@@ -61,6 +59,7 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Check file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setError('Ảnh quá lớn. Vui lòng chọn ảnh dưới 5MB.');
       return;
@@ -70,12 +69,12 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
     setError('');
 
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-    const uploadPreset = 'ml_default';
+    const uploadPreset = 'ml_default'; // Standard unsigned preset name
 
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', uploadPreset);
-    formData.append('folder', 'products');
+    formData.append('folder', 'blog_posts');
 
     try {
       const response = await fetch(
@@ -89,7 +88,7 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
       const data = await response.json();
 
       if (data.secure_url) {
-        setImageUrl(data.secure_url);
+        setCoverImage(data.secure_url);
       } else if (data.error) {
         setError(`Lỗi Cloudinary: ${data.error.message}`);
         console.error('Cloudinary Error:', data.error);
@@ -102,11 +101,10 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
     }
   }
 
-  // Auto-generate slug from name
-  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (!isEditing) {
-      const name = e.target.value;
-      const generatedSlug = name
+      const title = e.target.value;
+      const generatedSlug = title
         .toLowerCase()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
@@ -115,7 +113,7 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
         .trim()
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-');
-      
+
       const slugInput = document.getElementById('slug') as HTMLInputElement;
       if (slugInput) slugInput.value = generatedSlug;
     }
@@ -123,81 +121,49 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
 
   return (
     <div className="pt-24 pb-10">
-      <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        {/* ... existing header ... */}
         <div className="mb-6 flex items-center">
-          <Link href="/admin/products" className="mr-4 text-gray-500 hover:text-gray-900 transition-colors">
+          <Link href="/admin/posts" className="mr-4 text-gray-500 hover:text-gray-900 transition-colors">
             <ArrowLeft size={24} />
           </Link>
           <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins, sans-serif' }}>
-            {isEditing ? 'Sửa Sản phẩm' : 'Thêm Sản phẩm Mới'}
+            {isEditing ? 'Sửa Bài Viết' : 'Thêm Bài Viết Mới'}
           </h1>
         </div>
 
         <div className="bg-white overflow-hidden shadow sm:rounded-lg border border-gray-100">
           <div className="px-4 py-5 sm:p-6">
             {error && (
-              <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+              <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
                 {error}
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                
+                {/* Title & Slug */}
                 <div className="sm:col-span-4">
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Tên sản phẩm
+                  <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                    Tiêu đề bài viết <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-1">
                     <input
                       type="text"
-                      name="name"
-                      id="name"
+                      name="title"
+                      id="title"
                       required
-                      defaultValue={initialData?.name}
-                      onChange={handleNameChange}
-                      className="shadow-sm focus:ring-[#FE5200] focus:border-[#FE5200] block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
+                      defaultValue={initialData?.title}
+                      onChange={handleTitleChange}
+                      placeholder="Nhập tiêu đề bài viết..."
+                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
                     />
                   </div>
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label htmlFor="price" className="block text-sm font-medium text-gray-700">
-                    Giá (VNĐ)
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      type="number"
-                      name="price"
-                      id="price"
-                      required
-                      min="0"
-                      step="1000"
-                      defaultValue={initialData?.price}
-                      className="shadow-sm focus:ring-[#FE5200] focus:border-[#FE5200] block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-3">
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-                    Danh mục
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      type="text"
-                      name="category"
-                      id="category"
-                      required
-                      defaultValue={initialData?.category ?? 'Bánh Tráng'}
-                      className="shadow-sm focus:ring-[#FE5200] focus:border-[#FE5200] block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-3">
                   <label htmlFor="slug" className="block text-sm font-medium text-gray-700">
-                    URL Slug (duy nhất)
+                    URL Slug <span className="text-red-500">*</span>
                   </label>
                   <div className="mt-1">
                     <input
@@ -207,24 +173,23 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
                       required
                       defaultValue={initialData?.slug}
                       readOnly={isEditing}
-                      className={`shadow-sm focus:ring-[#FE5200] focus:border-[#FE5200] block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border ${isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+                      className={`shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border ${isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}`}
                     />
                   </div>
-                  <p className="mt-2 text-sm text-gray-500">Đường dẫn thân thiện (vd: banh-trang-tron).</p>
                 </div>
 
-                {/* Cover Image Upload (Product) */}
+                {/* Cover Image Upload (New Robust Method) */}
                 <div className="sm:col-span-6">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Hình ảnh sản phẩm <span className="text-red-500">*</span>
+                    Ảnh bìa <span className="text-red-500">*</span>
                   </label>
                   
                   <div className="flex flex-col sm:flex-row gap-4 items-start">
                     <div className="w-full sm:w-48 h-32 relative rounded-md border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden group">
-                      {imageUrl ? (
+                      {coverImage ? (
                         <Image
-                          src={imageUrl}
-                          alt="Product Preview"
+                          src={coverImage}
+                          alt="Cover Preview"
                           fill
                           className="object-cover"
                         />
@@ -241,11 +206,11 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
                           onChange={handleFileUpload}
                           disabled={isUploading}
                           className="hidden"
-                          id="product-upload"
+                          id="cover-upload"
                         />
                         <label
-                          htmlFor="product-upload"
-                          className={`inline-flex items-center px-4 py-2 border border-[#FE5200] rounded-md shadow-sm text-sm font-medium text-[#FE5200] bg-white hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FE5200] transition-colors cursor-pointer ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          htmlFor="cover-upload"
+                          className={`inline-flex items-center px-4 py-2 border border-blue-600 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors cursor-pointer ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                           {isUploading ? (
                             <>
@@ -255,50 +220,89 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
                           ) : (
                             <>
                               <Upload className="mr-2 h-4 w-4" />
-                              {imageUrl ? 'Thay đổi ảnh' : 'Tải ảnh lên'}
+                              {coverImage ? 'Thay đổi ảnh' : 'Tải ảnh lên'}
                             </>
                           )}
                         </label>
                       </div>
                       <p className="text-xs text-gray-500">
-                        Khuyên dùng ảnh hình vuông (1:1), dung lượng tối đa 5MB.
+                        Khuyên dùng ảnh tỉ lệ 16:9, dung lượng tối đa 5MB.
                       </p>
-                      <input type="hidden" name="imageUrl" value={imageUrl} />
+                      <input type="hidden" name="coverImage" value={coverImage} />
                     </div>
                   </div>
                 </div>
 
+                {/* Tags */}
                 <div className="sm:col-span-6">
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                    Mô tả
+                  <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
+                    Tags (phân cách bằng dấu phẩy)
                   </label>
                   <div className="mt-1">
-                    <textarea
-                      id="description"
-                      name="description"
-                      rows={4}
-                      required
-                      defaultValue={initialData?.description}
-                      className="shadow-sm focus:ring-[#FE5200] focus:border-[#FE5200] block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
+                    <input
+                      type="text"
+                      name="tags"
+                      id="tags"
+                      defaultValue={initialData?.tags?.join(', ')}
+                      placeholder="bánh tráng, ẩm thực, Cần Thơ"
+                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
                     />
                   </div>
                 </div>
+
+                {/* Excerpt */}
+                <div className="sm:col-span-6">
+                  <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700">
+                    Tóm tắt (excerpt) <span className="text-red-500">*</span>
+                  </label>
+                  <div className="mt-1">
+                    <textarea
+                      id="excerpt"
+                      name="excerpt"
+                      rows={3}
+                      required
+                      defaultValue={initialData?.excerpt}
+                      placeholder="Mô tả ngắn gọn về nội dung bài viết (hiển thị ở trang danh sách)..."
+                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
+                    />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="sm:col-span-6">
+                  <label htmlFor="content" className="block text-sm font-medium text-gray-700">
+                    Nội dung bài viết <span className="text-red-500">*</span>
+                  </label>
+                  <div className="mt-1">
+                    <textarea
+                      id="content"
+                      name="content"
+                      rows={16}
+                      required
+                      defaultValue={initialData?.content}
+                      placeholder="Viết nội dung bài viết đầy đủ tại đây..."
+                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border font-mono text-sm"
+                    />
+                  </div>
+                  <p className="mt-1 text-xs text-gray-500">Hỗ trợ văn bản thuần. Xuống dòng bằng Enter.</p>
+                </div>
+
               </div>
 
               <div className="pt-5 border-t border-gray-200 flex justify-end">
                 <Link
-                  href="/admin/products"
-                  className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FE5200] mr-3"
+                  href="/admin/posts"
+                  className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-3"
                 >
                   Huỷ
                 </Link>
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="inline-flex justify-center items-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#A60817] hover:bg-[#8A0613] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A60817] disabled:opacity-50"
+                  className="inline-flex justify-center items-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 disabled:opacity-50"
                 >
                   <Save className="mr-2 h-4 w-4" />
-                  {isLoading ? 'Đang lưu...' : 'Lưu Sản phẩm'}
+                  {isLoading ? 'Đang lưu...' : 'Lưu Bài Viết'}
                 </button>
               </div>
             </form>

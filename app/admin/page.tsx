@@ -4,6 +4,8 @@ import { logoutAdmin } from './actions';
 import { LayoutDashboard, Users, ShoppingCart, LogOut } from 'lucide-react';
 import AdminMenuGrid from '@/components/admin/AdminMenuGrid';
 import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
+import { FileText } from 'lucide-react';
 
 export default async function AdminDashboardPage() {
   const cookieStore = await cookies();
@@ -12,6 +14,14 @@ export default async function AdminDashboardPage() {
   if (!session || session.value !== 'authenticated') {
     redirect('/admin/login');
   }
+
+  const [postCount, orderCount, customerCount] = await Promise.all([
+    prisma.post.count(),
+    prisma.order.count(),
+    prisma.order.groupBy({
+      by: ['customerPhone'],
+    }).then(groups => groups.length),
+  ]);
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans pt-16">
@@ -50,7 +60,6 @@ export default async function AdminDashboardPage() {
               </h1>
               
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {/* Stats cards */}
                 <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-100">
                   <div className="px-4 py-5 sm:p-6">
                     <div className="flex items-center">
@@ -63,7 +72,7 @@ export default async function AdminDashboardPage() {
                             Tổng đơn hàng
                           </dt>
                           <dd className="text-3xl font-semibold text-gray-900">
-                            120
+                            {orderCount}
                           </dd>
                         </dl>
                       </div>
@@ -80,10 +89,10 @@ export default async function AdminDashboardPage() {
                       <div className="ml-5 w-0 flex-1">
                         <dl>
                           <dt className="text-sm font-medium text-gray-500 truncate">
-                            Khách hàng mới
+                            Khách hàng
                           </dt>
                           <dd className="text-3xl font-semibold text-gray-900">
-                            45
+                            {customerCount}
                           </dd>
                         </dl>
                       </div>
@@ -95,15 +104,15 @@ export default async function AdminDashboardPage() {
                   <div className="px-4 py-5 sm:p-6">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 bg-orange-100 rounded-md p-3">
-                        <LayoutDashboard className="h-6 w-6 text-orange-600" />
+                        <FileText className="h-6 w-6 text-orange-600" />
                       </div>
                       <div className="ml-5 w-0 flex-1">
                         <dl>
                           <dt className="text-sm font-medium text-gray-500 truncate">
-                            Truy cập hôm nay
+                            Bài viết (Blog)
                           </dt>
                           <dd className="text-3xl font-semibold text-gray-900">
-                            320
+                            {postCount}
                           </dd>
                         </dl>
                       </div>
