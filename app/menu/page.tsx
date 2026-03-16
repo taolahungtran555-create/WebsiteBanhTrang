@@ -2,68 +2,32 @@ import ProductCard from "@/components/ui/ProductCard";
 import type { Metadata } from 'next';
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: 'Thực Đơn Bánh Tráng Trộn Ngon Cần Thơ | Giá Rẻ, Đa Dạng',
   description: 'Khám phá hơn 20 loại bánh tráng trộn, nướng, cuốn tại tiệm ngon nhất Ninh Kiều Cần Thơ. Giá chỉ từ 15k. Xem ngay menu!',
 };
 
-const MENU_PRODUCTS = [
-  {
-    category: "Bánh Tráng Trộn",
-    items: [
-      {
-        slug: "banh-trang-tron-thap-cam",
-        name: "Bánh Tráng Trộn Thập Cẩm Đặc Biệt",
-        description: "Khô bò, khô mực, trứng cút, xoài, đậu phộng, hành phi.",
-        price: 35000,
-        imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"
-      },
-      {
-        slug: "banh-trang-tron-kho-bo",
-        name: "Bánh Tráng Trộn Khô Bò Đen",
-        description: "Khô bò đen thượng hạng, cay nức mũi.",
-        price: 25000,
-        imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"
-      },
-      {
-        slug: "banh-trang-tron-trung-cut",
-        name: "Bánh Tráng Trộn Trứng Cút",
-        description: "Trứng cút luộc mềm, phủ sốt đặc biệt cay chua đậm đà.",
-        price: 20000,
-        imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"
-      },
-      {
-        slug: "banh-trang-tron-xoai",
-        name: "Bánh Tráng Trộn Xoài Xanh",
-        description: "Xoài xanh chua giòn hòa quyện muối tôm đỏ cay cực kỳ kích thích vị giác.",
-        price: 15000,
-        imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"
-      },
-    ]
-  },
-  {
-    category: "Bánh Tráng Cuốn",
-    items: [
-      {
-        slug: "banh-trang-cuon-sot-me",
-        name: "Bánh Cuốn Bơ Sốt Me",
-        description: "Cuốn dài 20cm, chấm sốt me chua cay cực dính.",
-        price: 30000,
-        imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"
-      },
-      {
-        slug: "banh-trang-cuon-sot-bo",
-        name: "Bánh Cuốn Chấm Bơ Tỏi",
-        description: "Bơ béo ngậy quện cùng tỏi phi giòn rụm.",
-        price: 30000,
-        imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"
-      }
-    ]
-  }
-];
+export default async function MenuPage() {
+  const menuItems = await prisma.menuItem.findMany({
+    orderBy: { category: 'asc' }
+  });
 
-export default function MenuPage() {
+  // Group items by category
+  const categories = menuItems.reduce((acc, item) => {
+    if (!acc[item.category]) {
+      acc[item.category] = [];
+    }
+    acc[item.category].push(item);
+    return acc;
+  }, {} as Record<string, typeof menuItems>);
+
+  const MENU_SECTIONS = Object.entries(categories).map(([name, items]) => ({
+    category: name,
+    items
+  }));
+
   return (
     <div className="bg-gray-50 min-h-screen" style={{ fontFamily: 'Inter, sans-serif' }}>
 
@@ -91,23 +55,29 @@ export default function MenuPage() {
       {/* Menu Categories */}
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="flex flex-col gap-16">
-          {MENU_PRODUCTS.map((section, idx) => (
-            <div key={idx}>
-              <div className="flex items-center gap-4 mb-8">
-                <h2
-                  className="text-3xl font-bold text-gray-900 pb-2 border-b-4 inline-block"
-                  style={{ fontFamily: 'Poppins, sans-serif', borderColor: '#A60817' }}
-                >
-                  {section.category}
-                </h2>
+          {MENU_SECTIONS.length > 0 ? (
+            MENU_SECTIONS.map((section, idx) => (
+              <div key={idx}>
+                <div className="flex items-center gap-4 mb-8">
+                  <h2
+                    className="text-3xl font-bold text-gray-900 pb-2 border-b-4 inline-block"
+                    style={{ fontFamily: 'Poppins, sans-serif', borderColor: '#A60817' }}
+                  >
+                    {section.category}
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {section.items.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {section.items.map(product => (
-                  <ProductCard key={product.slug} product={product} />
-                ))}
-              </div>
+            ))
+          ) : (
+            <div className="py-20 text-center">
+               <p className="text-xl text-gray-500 font-medium">Hiện tại thực đơn đang được cập nhật. Vui lòng quay lại sau!</p>
             </div>
-          ))}
+          )}
         </div>
       </div>
 
@@ -127,7 +97,7 @@ export default function MenuPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            MENU_PRODUCTS.flatMap(section =>
+            MENU_SECTIONS.flatMap(section =>
               section.items.map(product => ({
                 "@context": "https://schema.org/",
                 "@type": "Product",

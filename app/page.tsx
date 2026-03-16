@@ -2,63 +2,20 @@ import Link from "next/link";
 import ProductCard from "@/components/ui/ProductCard";
 import BlogCard from "@/components/ui/BlogCard";
 import { ChevronRight, Star, Award, Clock, Flame } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
-const HOT_PRODUCTS = [
-  {
-    slug: "banh-trang-tron-thap-cam",
-    name: "Bánh Tráng Trộn Thập Cẩm Đặc Biệt",
-    description: "Đầy đủ topping: khô bò, khô mực, trứng cút, xoài xanh, đậu phộng rang giòn và nước sốt độc quyền.",
-    price: 35000,
-    imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"
-  },
-  {
-    slug: "banh-trang-tron-kho-bo",
-    name: "Bánh Tráng Trộn Khô Bò Đen",
-    description: "Khô bò đen thượng hạng, cay nức mũi, kết hợp bánh tráng dẻo Tây Ninh.",
-    price: 25000,
-    imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"
-  },
-  {
-    slug: "banh-trang-cuon-sot-me",
-    name: "Bánh Tráng Cuốn Sốt Me",
-    description: "Bánh tráng cuốn bơ tép mỡ, chấm cùng sốt me chua ngọt đậm đà khó cưỡng.",
-    price: 30000,
-    imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"
-  },
-  {
-    slug: "banh-trang-nuong-pho-mai",
-    name: "Bánh Tráng Nướng Phô Mai",
-    description: "Bánh tráng giòn nướng than hoa, phủ phô mai béo ngậy và sa tế cay thơm.",
-    price: 20000,
-    imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop"
-  },
-];
+export default async function Home() {
+  const [hotProducts, blogPosts] = await Promise.all([
+    prisma.menuItem.findMany({
+      take: 4,
+      orderBy: { createdAt: 'desc' }
+    }),
+    prisma.post.findMany({
+      take: 3,
+      orderBy: { publishedAt: 'desc' }
+    })
+  ]);
 
-const BLOG_POSTS = [
-  {
-    slug: "banh-trang-tron-ngon-nhat-can-tho",
-    title: "Bánh Tráng Trộn Ngon Nhất Cần Thơ — Địa Chỉ & Review 2025",
-    excerpt: "Bài viết tổng hợp chi tiết nhất về tiệm bánh tráng trộn đang làm mưa làm gió tại quận Ninh Kiều...",
-    coverImage: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop",
-    publishedAt: "2025-03-10T08:00:00.000Z"
-  },
-  {
-    slug: "ship-banh-trang-tron-can-tho",
-    title: "Ship Bánh Tráng Trộn Cần Thơ Tận Nơi Siêu Tốc Trong 30 Phút",
-    excerpt: "Trời mưa thèm ăn vặt? Đừng lo, dịch vụ ship bánh tráng trộn Cần Thơ của chúng tôi sẽ giao hàng tận cửa nhà bạn.",
-    coverImage: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop",
-    publishedAt: "2025-03-10T08:00:00.000Z"
-  },
-  {
-    slug: "nguyen-lieu-banh-trang-tron-chuan",
-    title: "Nguyên Liệu Bánh Tráng Trộn Chuẩn Vị — Bí Quyết Gây Nghiện",
-    excerpt: "Từ bánh tráng dẻo Tây Ninh đến muối tôm đỏ cay, khám phá những nguyên liệu tạo nên bịch bánh tráng trộn ngon.",
-    coverImage: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop",
-    publishedAt: "2025-03-10T08:00:00.000Z"
-  }
-];
-
-export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50" style={{ fontFamily: 'Inter, sans-serif' }}>
 
@@ -183,9 +140,15 @@ export default function Home() {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {HOT_PRODUCTS.map((product) => (
-            <ProductCard key={product.slug} product={product} />
-          ))}
+          {hotProducts.length > 0 ? (
+            hotProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))
+          ) : (
+            <div className="col-span-full py-12 text-center text-gray-400 font-medium bg-white rounded-2xl border border-dashed">
+              Đang cập nhật sản phẩm...
+            </div>
+          )}
         </div>
       </section>
 
@@ -271,9 +234,15 @@ export default function Home() {
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {BLOG_POSTS.map((post) => (
-            <BlogCard key={post.slug} post={post} />
-          ))}
+          {blogPosts.length > 0 ? (
+            blogPosts.map((post) => (
+              <BlogCard key={post.id} post={{ ...post, publishedAt: post.publishedAt.toISOString() }} />
+            ))
+          ) : (
+            <div className="col-span-full py-12 text-center text-gray-400 font-medium bg-white rounded-2xl border border-dashed">
+              Đang cập nhật tin tức...
+            </div>
+          )}
         </div>
       </section>
 

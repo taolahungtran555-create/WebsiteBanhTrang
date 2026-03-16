@@ -8,31 +8,13 @@ export const metadata: Metadata = {
   description: 'Tổng hợp chia sẻ, review đánh giá các loại bánh tráng trộn ngon nhất tại Cần Thơ. Kiến thức 100% hữu ích cho tín đồ ăn vặt.',
 };
 
-const MOCK_POSTS = [
-  {
-    title: "Bánh Tráng Trộn Ngon Nhất Cần Thơ — Địa Chỉ & Review 2025",
-    slug: "banh-trang-tron-ngon-nhat-can-tho",
-    excerpt: "Bài viết tổng hợp chi tiết nhất về tiệm bánh tráng trộn đang làm mưa làm gió tại quận Ninh Kiều...",
-    coverImage: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop",
-    publishedAt: "2025-03-10T08:00:00.000Z"
-  },
-  {
-    title: "Ship Bánh Tráng Trộn Cần Thơ Tận Nơi Siêu Tốc Trong 30 Phút",
-    slug: "ship-banh-trang-tron-can-tho",
-    excerpt: "Trời mưa thèm ăn vặt? Đừng lo, dịch vụ ship bánh tráng trộn Cần Thơ của chúng tôi sẽ giao hàng tận cửa nhà bạn.",
-    coverImage: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop",
-    publishedAt: "2025-03-10T08:00:00.000Z"
-  },
-  {
-    title: "Nguyên Liệu Bánh Tráng Trộn Chuẩn Vị — Bí Quyết Gây Nghiện",
-    slug: "nguyen-lieu-banh-trang-tron-chuan",
-    excerpt: "Từ bánh tráng dẻo Tây Ninh đến muối tôm đỏ cay, khám phá những nguyên liệu tạo nên bịch bánh tráng trộn ngon.",
-    coverImage: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop",
-    publishedAt: "2025-03-10T08:00:00.000Z"
-  }
-];
+import { prisma } from "@/lib/prisma";
 
-export default function BlogListing() {
+export default async function BlogListing() {
+  const posts = await prisma.post.findMany({
+    orderBy: { publishedAt: 'desc' }
+  });
+
   return (
     <div className="min-h-screen" style={{ fontFamily: 'Inter, sans-serif' }}>
 
@@ -61,9 +43,15 @@ export default function BlogListing() {
       <div className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {MOCK_POSTS.map(post => (
-              <BlogCard key={post.slug} post={post} />
-            ))}
+            {posts.length > 0 ? (
+              posts.map(post => (
+                <BlogCard key={post.id} post={{ ...post, publishedAt: post.publishedAt.toISOString() }} />
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center">
+                <p className="text-xl text-gray-500 font-medium whitespace-pre-wrap">Hiện tại chuyên mục tin tức đang được cập nhật.{"\n"}Vui lòng quay lại sau!</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

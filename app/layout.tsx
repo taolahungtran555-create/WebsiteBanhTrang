@@ -3,6 +3,7 @@ import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { CartProvider } from '@/lib/context/CartContext';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const poppins = Poppins({
@@ -40,11 +41,13 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body className={`${inter.variable} ${poppins.variable} min-h-screen flex flex-col`} style={{ fontFamily: 'Inter, sans-serif' }}>
-        <Header />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <CartProvider>
+          <Header />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </CartProvider>
         {/* LocalBusiness Schema for Homepage */}
         <script
           type="application/ld+json"
