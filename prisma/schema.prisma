@@ -8,14 +8,15 @@ datasource db {
 }
 
 model MenuItem {
-  id          Int      @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String
   description String
   price       Float
-  imageUrl    String   // Cloudinary URL
+  imageUrl    String
   category    String
-  slug        String   @unique
-  createdAt   DateTime @default(now())
+  slug        String      @unique
+  createdAt   DateTime    @default(now())
+  OrderItem   OrderItem[]
 }
 
 model Post {
@@ -23,8 +24,8 @@ model Post {
   title       String
   slug        String   @unique
   excerpt     String
-  content     String   // Markdown hoặc HTML
-  coverImage  String   // Cloudinary URL
+  content     String
+  coverImage  String
   tags        String[]
   publishedAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -36,4 +37,27 @@ model Review {
   rating    Int
   body      String
   createdAt DateTime @default(now())
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  customerName    String
+  customerPhone   String
+  customerAddress String?
+  status          String      @default("PENDING")
+  totalAmount     Float
+  note            String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime
+  OrderItem       OrderItem[]
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  orderId    Int
+  menuItemId Int
+  quantity   Int
+  price      Float
+  MenuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  Order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
