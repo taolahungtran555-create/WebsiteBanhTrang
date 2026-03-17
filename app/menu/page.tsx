@@ -42,7 +42,7 @@ export default async function MenuPage() {
           </div>
           <h1
             className="text-4xl md:text-5xl font-extrabold mb-4"
-            style={{ fontFamily: 'Poppins, sans-serif' }}
+            style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}
           >
             Thực Đơn Đa Dạng
           </h1>
@@ -61,7 +61,7 @@ export default async function MenuPage() {
                 <div className="flex items-center gap-4 mb-8">
                   <h2
                     className="text-3xl font-bold text-gray-900 pb-2 border-b-4 inline-block"
-                    style={{ fontFamily: 'Poppins, sans-serif', borderColor: '#A60817' }}
+                    style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif', borderColor: '#A60817' }}
                   >
                     {section.category}
                   </h2>

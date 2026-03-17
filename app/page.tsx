@@ -46,12 +46,24 @@ export default async function Home() {
             </div>
 
             <h1
-              className="text-white mb-4"
-              style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', fontWeight: 800, lineHeight: 1.2 }}
+              className="text-white mb-6"
+              style={{
+                fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif',
+                fontSize: 'clamp(2.5rem, 6vw, 4.2rem)',
+                fontWeight: 900,
+                lineHeight: 1.3,
+                textShadow: '0 2px 20px rgba(0,0,0,0.3)',
+                letterSpacing: '-0.01em',
+              }}
             >
               Bánh Tráng Trộn
               <br />
-              <span style={{ color: '#FFB200' }}>Ngon Cần Thơ</span>
+              <span style={{
+                color: '#FFB200',
+                textShadow: '0 2px 20px rgba(255,178,0,0.3)',
+              }}>
+                Ngon Cần Thơ
+              </span>
             </h1>
 
             <p className="text-lg mb-8 leading-relaxed" style={{ color: 'rgba(255,255,255,0.8)' }}>
@@ -87,7 +99,7 @@ export default async function Home() {
                     <Icon size={18} style={{ color: '#FFB200' }} />
                   </div>
                   <div>
-                    <div className="font-bold text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>{value}</div>
+                    <div className="font-bold text-white" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>{value}</div>
                     <div className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>{label}</div>
                   </div>
                 </div>
@@ -131,7 +143,7 @@ export default async function Home() {
           </div>
           <h2
             className="text-gray-900 mb-3"
-            style={{ fontFamily: 'Poppins, sans-serif', fontSize: '2rem', fontWeight: 700 }}
+            style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif', fontSize: '2rem', fontWeight: 700 }}
           >
             Món Ngôn Bán Chạy Nhất
           </h2>
@@ -157,7 +169,7 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center text-white">
           <h2
             className="mb-3"
-            style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.8rem', fontWeight: 700 }}
+            style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif', fontSize: '1.8rem', fontWeight: 700 }}
           >
             Thực Đơn Đầy Đủ Hơn 10 Món
           </h2>
@@ -185,7 +197,7 @@ export default async function Home() {
               </div>
               <h2
                 className="text-gray-900 mb-4"
-                style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.8rem', fontWeight: 700 }}
+                style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif', fontSize: '1.8rem', fontWeight: 700 }}
               >
                 Hương Vị Đặc Trưng<br />
                 <span style={{ color: '#A60817' }}>Từ Đất Cần Thơ</span>
@@ -220,7 +232,7 @@ export default async function Home() {
             </div>
             <h2
               className="text-gray-900"
-              style={{ fontFamily: 'Poppins, sans-serif', fontSize: '2rem', fontWeight: 700 }}
+              style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif', fontSize: '2rem', fontWeight: 700 }}
             >
               Bài Viết Mới Nhất
             </h2>

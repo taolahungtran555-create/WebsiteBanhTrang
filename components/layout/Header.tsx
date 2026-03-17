@@ -41,7 +41,7 @@ export default function Header() {
               <div className="leading-tight">
                 <div
                   className="text-white font-bold text-sm"
-                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                  style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}
                 >
                   Bánh Tránh Trộn
                 </div>
@@ -158,7 +158,7 @@ export default function Header() {
       >
         <div className="flex flex-col h-full">
           <div className="p-6 border-b flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins, sans-serif' }}>Giỏ hàng</h2>
+            <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>Giỏ hàng</h2>
             <button 
               onClick={() => setCartOpen(false)}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"

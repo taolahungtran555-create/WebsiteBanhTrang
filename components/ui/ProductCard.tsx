@@ -33,7 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="p-4">
         <h3
           className="font-semibold text-gray-800 mb-1 truncate"
-          style={{ fontFamily: 'Poppins, sans-serif' }}
+          style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}
         >
           {product.name}
         </h3>
@@ -43,7 +43,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-center justify-between">
           <span
             className="font-bold text-lg"
-            style={{ color: '#A60817', fontFamily: 'Poppins, sans-serif' }}
+            style={{ color: '#A60817', fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}
           >
             {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}
           </span>

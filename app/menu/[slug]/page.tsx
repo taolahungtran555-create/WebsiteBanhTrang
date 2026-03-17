@@ -72,7 +72,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
                 <Star size={16} fill="#FE5200" />
                 <span>{product.category}</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                 {product.name}
               </h1>
               <div className="text-3xl font-black text-[#A60817] mb-6">
@@ -131,7 +131,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
           <div className="mt-24">
             <div className="flex items-center justify-between mb-10">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                <h2 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                   Có thể bạn cũng thích
                 </h2>
                 <div className="h-1.5 w-20 bg-[#A60817] mt-2 rounded-full"></div>

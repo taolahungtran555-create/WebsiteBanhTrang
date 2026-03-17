@@ -21,7 +21,7 @@ export default function ContactPage() {
           </div>
           <h1
             className="text-4xl md:text-5xl font-extrabold mb-4"
-            style={{ fontFamily: 'Poppins, sans-serif' }}
+            style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}
           >
             Liên Hệ <span style={{ color: '#FFB200' }}>Với Tiệm</span>
           </h1>
@@ -46,7 +46,7 @@ export default function ContactPage() {
                 <MapPin size={20} style={{ color: '#A60817' }} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                   Địa Chỉ Cửa Hàng
                 </h3>
                 <p className="text-gray-600">123 Đường 30/4, Phường Hưng Lợi, Quận Ninh Kiều, Cần Thơ</p>
@@ -61,13 +61,13 @@ export default function ContactPage() {
                 <Phone size={20} style={{ color: '#A60817' }} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                   Hotline Đặt Hàng
                 </h3>
                 <a
                   href="tel:0123456789"
                   className="font-extrabold text-3xl transition-opacity hover:opacity-80"
-                  style={{ color: '#A60817', fontFamily: 'Poppins, sans-serif' }}
+                  style={{ color: '#A60817', fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}
                 >
                   0123.456.789
                 </a>
@@ -83,7 +83,7 @@ export default function ContactPage() {
                 <Clock size={20} style={{ color: '#A60817' }} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                   Giờ Hoạt Động
                 </h3>
                 <p className="text-gray-600">Thứ 2 - Chủ Nhật: 09:00 - 22:00</p>
@@ -98,7 +98,7 @@ export default function ContactPage() {
                 <Mail size={20} style={{ color: '#A60817' }} />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                   Email
                 </h3>
                 <p className="text-gray-600">hello@banhtrangtronngoncantho.vn</p>

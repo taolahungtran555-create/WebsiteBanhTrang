@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FFB200]/10">
             <LogIn className="h-8 w-8 text-[#A60817]" />
           </div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900" style={{ fontFamily: 'Poppins, sans-serif' }}>
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
             Đăng nhập Quản trị
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">

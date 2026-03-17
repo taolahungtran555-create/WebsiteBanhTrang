@@ -128,7 +128,7 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
           <Link href="/admin/products" className="mr-4 text-gray-500 hover:text-gray-900 transition-colors">
             <ArrowLeft size={24} />
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins, sans-serif' }}>
+          <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
             {isEditing ? 'Sửa Sản phẩm' : 'Thêm Sản phẩm Mới'}
           </h1>
         </div>

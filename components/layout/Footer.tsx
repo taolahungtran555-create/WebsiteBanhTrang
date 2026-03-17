@@ -17,7 +17,7 @@ export default function Footer() {
                 <Flame size={26} color="#A60817" />
               </div>
               <div>
-                <div className="font-bold text-lg text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                <div className="font-bold text-lg text-white" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                   Bánh Tráng Trộn
                 </div>
                 <div className="text-sm" style={{ color: '#FFB200', fontFamily: 'Inter, sans-serif' }}>
@@ -60,7 +60,7 @@ export default function Footer() {
           <div>
             <h3
               className="font-semibold text-base mb-4"
-              style={{ fontFamily: 'Poppins, sans-serif', color: '#FFB200' }}
+              style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif', color: '#FFB200' }}
             >
               Liên Kết Nhanh
             </h3>
@@ -88,7 +88,7 @@ export default function Footer() {
           <div>
             <h3
               className="font-semibold text-base mb-4"
-              style={{ fontFamily: 'Poppins, sans-serif', color: '#FFB200' }}
+              style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif', color: '#FFB200' }}
             >
               Thông Tin Liên Hệ
             </h3>

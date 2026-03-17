@@ -29,7 +29,7 @@ export default async function BlogListing() {
           </div>
           <h1
             className="text-4xl md:text-5xl font-extrabold mb-4"
-            style={{ fontFamily: 'Poppins, sans-serif' }}
+            style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}
           >
             Góc Review & Tin Tức <span style={{ color: '#FFB200' }}>Ẩm Thực Mới</span>
           </h1>

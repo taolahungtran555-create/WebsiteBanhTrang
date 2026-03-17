@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import { Inter, Poppins, Be_Vietnam_Pro } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -10,6 +10,11 @@ const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
   variable: '--font-poppins',
+});
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ['latin', 'vietnamese'],
+  weight: ['700', '800', '900'],
+  variable: '--font-be-vietnam-pro',
 });
 
 export const metadata: Metadata = {
@@ -40,7 +45,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <body className={`${inter.variable} ${poppins.variable} min-h-screen flex flex-col`} style={{ fontFamily: 'Inter, sans-serif' }}>
+      <body className={`${inter.variable} ${poppins.variable} ${beVietnamPro.variable} min-h-screen flex flex-col`} style={{ fontFamily: 'Inter, sans-serif' }}>
         <CartProvider>
           <Header />
           <main className="flex-1">

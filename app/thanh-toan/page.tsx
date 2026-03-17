@@ -71,7 +71,7 @@ export default function CheckoutPage() {
             <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
               <CheckCircle className="w-10 h-10 text-green-500" />
             </div>
-            <h1 className="text-3xl font-extrabold text-gray-900 mb-3" style={{ fontFamily: 'Poppins, sans-serif' }}>
+            <h1 className="text-3xl font-extrabold text-gray-900 mb-3" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
               Đặt hàng thành công!
             </h1>
             <p className="text-gray-500 mb-2 text-lg">
@@ -110,7 +110,7 @@ export default function CheckoutPage() {
             <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-6 opacity-50">
               <ShoppingCart className="w-10 h-10 text-gray-400" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-3" style={{ fontFamily: 'Poppins, sans-serif' }}>
+            <h1 className="text-2xl font-bold text-gray-900 mb-3" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
               Giỏ hàng trống
             </h1>
             <p className="text-gray-500 mb-8">Bạn chưa thêm sản phẩm nào vào giỏ hàng.</p>
@@ -135,7 +135,7 @@ export default function CheckoutPage() {
           <Link href="/menu" className="inline-flex items-center gap-2 text-gray-500 hover:text-[#A60817] transition-colors mb-4 font-medium">
             <ArrowLeft size={16} /> Quay lại thực đơn
           </Link>
-          <h1 className="text-3xl font-extrabold text-gray-900" style={{ fontFamily: 'Poppins, sans-serif' }}>
+          <h1 className="text-3xl font-extrabold text-gray-900" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
             Thông tin đặt hàng
           </h1>
         </div>
@@ -144,7 +144,7 @@ export default function CheckoutPage() {
           {/* Form */}
           <div className="lg:col-span-3">
             <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
-              <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                 <User size={20} className="text-[#FE5200]" />
                 Thông tin người nhận
               </h2>
@@ -256,7 +256,7 @@ export default function CheckoutPage() {
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 sticky top-24">
-              <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                 <ShoppingCart size={20} className="text-[#A60817]" />
                 Đơn hàng ({totalItems} sản phẩm)
               </h2>

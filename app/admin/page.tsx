@@ -30,7 +30,7 @@ export default async function AdminDashboardPage() {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
-                <Link href="/" className="font-bold text-xl text-[#A60817]" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                <Link href="/" className="font-bold text-xl text-[#A60817]" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                   Admin Panel
                 </Link>
               </div>
@@ -55,7 +55,7 @@ export default async function AdminDashboardPage() {
         <main>
           <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div className="px-4 py-8 sm:px-0">
-              <h1 className="text-3xl font-bold text-gray-900 mb-8" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              <h1 className="text-3xl font-bold text-gray-900 mb-8" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                 Tổng quan Dashboard
               </h1>
               

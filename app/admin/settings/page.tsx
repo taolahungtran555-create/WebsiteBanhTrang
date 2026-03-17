@@ -10,7 +10,7 @@ export default function AdminSettingsPage() {
             <Link href="/admin" className="mr-4 text-gray-500 hover:text-gray-900 transition-colors">
               <ArrowLeft size={24} />
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Poppins, sans-serif' }}>
+            <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
               Cài đặt Hệ thống
             </h1>
           </div>
