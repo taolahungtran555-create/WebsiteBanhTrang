@@ -4,8 +4,21 @@ import BlogCard from "@/components/ui/BlogCard";
 import { ChevronRight, Star, Award, Clock, Flame } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
+const LP_DEFAULTS = {
+  heroTitle:           'Bánh Tráng Trộn Ngon Cần Thơ',
+  heroSubtitle:        'Chua cay đậm đà – mê hoặc từng miếng cắn. Hương vị đặc trưng miền Tây với bò khô, trứng cút, đậu phộng rang và sa tế cay nồng.',
+  heroBgImage:         'https://images.unsplash.com/photo-1660579384185-5d9cc8d5bb69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1600',
+  aboutTitle:          'Hương Vị Đặc Trưng Từ Đất Cần Thơ',
+  aboutDescription1:   'Ra đời từ niềm đam mê ẩm thực đường phố, Bánh Tráng Trộn Ngon Cần Thơ mang đến công thức bí truyền đã được chắt lọc qua nhiều năm kinh nghiệm.',
+  aboutDescription2:   'Mỗi phần bánh tráng trộn là sự kết hợp tinh tế giữa nguyên liệu tươi ngon và gia vị đặc biệt, tạo nên hương vị không nơi nào sánh bằng.',
+  aboutImage:          'https://images.unsplash.com/photo-1689760661329-1e6504082caf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800',
+  statsRating:         '4.9/5',
+  statsDailyCustomers: '500+',
+  statsExperience:     '5 năm',
+};
+
 export default async function Home() {
-  const [hotProducts, blogPosts] = await Promise.all([
+  const [hotProducts, blogPosts, lpConfig] = await Promise.all([
     prisma.menuItem.findMany({
       take: 4,
       orderBy: { createdAt: 'desc' }
@@ -13,8 +26,11 @@ export default async function Home() {
     prisma.post.findMany({
       take: 3,
       orderBy: { publishedAt: 'desc' }
-    })
+    }),
+    prisma.langdingPage.findFirst({ where: { id: 1 } }),
   ]);
+
+  const lp = { ...LP_DEFAULTS, ...lpConfig };
 
   return (
     <div className="min-h-screen bg-gray-50" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -24,7 +40,7 @@ export default async function Home() {
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1660579384185-5d9cc8d5bb69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1600"
+            src={lp.heroBgImage}
             alt="Bánh tráng trộn ngon Cần Thơ"
             className="w-full h-full object-cover"
           />
@@ -56,18 +72,11 @@ export default async function Home() {
                 letterSpacing: '-0.01em',
               }}
             >
-              Bánh Tráng Trộn
-              <br />
-              <span style={{
-                color: '#FFB200',
-                textShadow: '0 2px 20px rgba(255,178,0,0.3)',
-              }}>
-                Ngon Cần Thơ
-              </span>
+              {lp.heroTitle}
             </h1>
 
             <p className="text-lg mb-8 leading-relaxed" style={{ color: 'rgba(255,255,255,0.8)' }}>
-              Chua cay đậm đà – mê hoặc từng miếng cắn. Hương vị đặc trưng miền Tây với bò khô, trứng cút, đậu phộng rang và sa tế cay nồng.
+              {lp.heroSubtitle}
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -90,9 +99,9 @@ export default async function Home() {
             {/* Stats */}
             <div className="flex flex-wrap gap-6 mt-10">
               {[
-                { icon: Star, value: '4.9/5', label: 'Đánh giá' },
-                { icon: Award, value: '500+', label: 'Khách/ngày' },
-                { icon: Clock, value: '5 năm', label: 'Kinh nghiệm' },
+                { icon: Star, value: lp.statsRating, label: 'Đánh giá' },
+                { icon: Award, value: lp.statsDailyCustomers, label: 'Khách/ngày' },
+                { icon: Clock, value: lp.statsExperience, label: 'Kinh nghiệm' },
               ].map(({ icon: Icon, value, label }) => (
                 <div key={label} className="flex items-center gap-2">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,178,0,0.2)' }}>
@@ -199,19 +208,20 @@ export default async function Home() {
                 className="text-gray-900 mb-4"
                 style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif', fontSize: '1.8rem', fontWeight: 700 }}
               >
-                Hương Vị Đặc Trưng<br />
-                <span style={{ color: '#A60817' }}>Từ Đất Cần Thơ</span>
+                {lp.aboutTitle.split('Từ').length > 1 ? (
+                  <>{lp.aboutTitle.split('Từ')[0]}<br /><span style={{ color: '#A60817' }}>Từ{lp.aboutTitle.split('Từ').slice(1).join('Từ')}</span></>
+                ) : lp.aboutTitle}
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Ra đời từ niềm đam mê ẩm thực đường phố, Bánh Tráng Trộn Ngon Cần Thơ mang đến công thức bí truyền đã được chắt lọc qua nhiều năm kinh nghiệm.
+                {lp.aboutDescription1}
               </p>
               <p className="text-gray-600 leading-relaxed">
-                Mỗi phần bánh tráng trộn là sự kết hợp tinh tế giữa nguyên liệu tươi ngon và gia vị đặc biệt, tạo nên hương vị không nơi nào sánh bằng.
+                {lp.aboutDescription2}
               </p>
             </div>
             <div className="relative h-72 md:h-auto">
               <img
-                src="https://images.unsplash.com/photo-1689760661329-1e6504082caf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800"
+                src={lp.aboutImage}
                 alt="Hàng quán bánh tráng trộn Cần Thơ tấp nập khách"
                 className="w-full h-full object-cover"
               />

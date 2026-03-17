@@ -61,3 +61,25 @@ model OrderItem {
   MenuItem   MenuItem @relation(fields: [menuItemId], references: [id])
   Order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
+
+model LangdingPage {
+  id                  Int      @id @default(1)
+
+  // Hero Section
+  heroTitle           String   @default("Bánh Tráng Trộn Ngon Cần Thơ")
+  heroSubtitle        String   @default("Chua cay đậm đà – mê hoặc từng miếng cắn. Hương vị đặc trưng miền Tây với bò khô, trứng cút, đậu phộng rang và sa tế cay nồng.")
+  heroBgImage         String   @default("https://images.unsplash.com/photo-1660579384185-5d9cc8d5bb69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1600")
+
+  // About Section
+  aboutTitle          String   @default("Hương Vị Đặc Trưng Từ Đất Cần Thơ")
+  aboutDescription1   String   @default("Ra đời từ niềm đam mê ẩm thực đường phố, Bánh Tráng Trộn Ngon Cần Thơ mang đến công thức bí truyền đã được chắt lọc qua nhiều năm kinh nghiệm.")
+  aboutDescription2   String   @default("Mỗi phần bánh tráng trộn là sự kết hợp tinh tế giữa nguyên liệu tươi ngon và gia vị đặc biệt, tạo nên hương vị không nơi nào sánh bằng.")
+  aboutImage          String   @default("https://images.unsplash.com/photo-1689760661329-1e6504082caf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800")
+
+  // Stats
+  statsRating         String   @default("4.9/5")
+  statsDailyCustomers String   @default("500+")
+  statsExperience     String   @default("5 năm")
+
+  updatedAt           DateTime @updatedAt
+}
