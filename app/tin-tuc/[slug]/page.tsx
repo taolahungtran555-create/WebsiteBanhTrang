@@ -1,22 +1,25 @@
 import Image from "next/image";
 import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 
-// For real environment, params would be fetched from DB.
 export async function generateMetadata(
   { params }: any,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
   
-  // Fake DB check
   if (!slug) return {};
 
-  const title = `Chia sẻ chi tiết về: ${slug.replace(/-/g, ' ')}`;
+  const post = await prisma.post.findUnique({
+    where: { slug }
+  });
+
+  if (!post) return {};
   
   return {
-    title: `${title} | Bánh Tráng Trộn Ngon Cần Thơ`,
-    description: `Khám phá bài viết chuyên sâu về ${title.toLowerCase()} tại tiệm bánh tráng trộn ngon nhất Cần Thơ.`,
+    title: `${post.title} | Bánh Tráng Trộn Ngon Cần Thơ`,
+    description: post.excerpt,
     alternates: {
       canonical: `https://banhtrangtronngoncantho.vn/tin-tuc/${slug}`,
     }
@@ -28,8 +31,14 @@ export default async function BlogPost({ params }: any) {
   
   if (!slug) notFound();
 
-  const title = "Bánh Tráng Trộn Ngon Nhất Cần Thơ — Địa Chỉ & Review 2025";
-  const image = "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200&auto=format&fit=crop";
+  const post = await prisma.post.findUnique({
+    where: { slug }
+  });
+
+  if (!post) notFound();
+
+  const title = post.title;
+  const image = post.coverImage || "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200&auto=format&fit=crop";
 
   return (
     <article className="bg-white min-h-screen">
@@ -51,25 +60,10 @@ export default async function BlogPost({ params }: any) {
       </div>
 
       <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <div className="prose prose-lg md:prose-xl prose-orange mx-auto">
-          <h2>Bánh tráng trộn Cần Thơ có gì đặc biệt?</h2>
-          <p>
-            Nhắc đến món ăn vặt quốc dân không thể bỏ qua <strong>bánh tráng trộn Cần Thơ</strong>. Dù món này xuất phát từ Tây Ninh, Sài Gòn nhưng khi về miền Tây, đặc biệt là xứ gạo trắng nước trong, hương vị đã được biến tấu ngọt ngào và đậm đà hơn hẳn.
-          </p>
-          <p>
-            Với nước sốt me đặc trưng hoặc sốt khô bò cay xè, một phần bánh tráng ở đây luôn trong tình trạng ngập ngụa topping: trứng cút, khô gà, khô mực, đậu phộng rang... ăn một miếng là ghiền.
-          </p>
-          <h3>Vì sao giới trẻ Cần Thơ ưa chuộng tiệm của chúng tôi?</h3>
-          <ul>
-            <li>Giao hàng <strong>ship bánh tráng trộn Cần Thơ tận nhà</strong> nhanh chóng chỉ trong 15-30 phút.</li>
-            <li>Nguyên liệu chuẩn loại 1, đảm bảo vệ sinh ATTP.</li>
-            <li>Menu linh hoạt cho phép thêm bớt độ mặn/ngọt theo ý thích.</li>
-          </ul>
-          <h3>Kết Luận</h3>
-          <p>
-            Chưa thử là một thiếu sót siêu to khổng lồ. Hãy đặt ngay qua hotline 0123 456 789 để kiểm chứng vị ngon này nhé!
-          </p>
-        </div>
+        <div 
+          className="prose prose-lg md:prose-xl prose-orange mx-auto"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
       </div>
 
       <script
@@ -80,8 +74,8 @@ export default async function BlogPost({ params }: any) {
             "@type": "Article",
             "headline": title,
             "image": [image],
-            "datePublished": new Date().toISOString(),
-            "dateModified": new Date().toISOString(),
+            "datePublished": post.publishedAt.toISOString(),
+            "dateModified": post.updatedAt.toISOString(),
             "author": [{
                 "@type": "Person",
                 "name": "Bánh Tráng Trộn Ngon Cần Thơ",
