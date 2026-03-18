@@ -12,7 +12,7 @@ const links = [
   { href: '/lien-he', label: 'Liên Hệ' },
 ];
 
-export default function Header() {
+export default function Header({ phone }: { phone: string }) {
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const { cart, removeFromCart, updateQuantity, totalPrice, totalItems } = useCart();

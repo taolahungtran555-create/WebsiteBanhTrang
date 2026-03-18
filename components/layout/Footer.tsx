@@ -1,7 +1,17 @@
 import Link from 'next/link';
-import { Flame, MapPin, Phone, Mail, Facebook, Instagram, Youtube } from 'lucide-react';
+import { Flame, MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({
+  phone,
+  address,
+  email,
+  hours
+}: {
+  phone: string;
+  address: string;
+  email: string;
+  hours: string;
+}) {
   return (
     <footer style={{ background: '#1a0505', color: 'white' }} className="pt-12 pb-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -70,7 +80,6 @@ export default function Footer() {
                 { href: '/menu', label: 'Thực Đơn' },
                 { href: '/tin-tuc', label: 'Tin Tức' },
                 { href: '/lien-he', label: 'Liên Hệ' },
-                { href: '/admin', label: 'Quản Trị' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link
@@ -95,15 +104,19 @@ export default function Footer() {
             <ul className="space-y-3 text-sm" style={{ color: '#9ca3af', fontFamily: 'Inter, sans-serif' }}>
               <li className="flex items-start gap-3">
                 <MapPin size={16} style={{ color: '#FE5200', marginTop: 2, flexShrink: 0 }} />
-                <span>123 Đường 30/4, Phường Hưng Lợi, Quận Ninh Kiều, TP. Cần Thơ</span>
+                <span>{address}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={16} style={{ color: '#FE5200' }} />
-                <a href="tel:0123456789" className="hover:text-white transition-colors">0123 456 789</a>
+                <a href={`tel:${phone.replace(/\D/g, '')}`} className="hover:text-white transition-colors">{phone}</a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={16} style={{ color: '#FE5200' }} />
-                <span>hello@banhtrangtronngoncantho.vn</span>
+                <a href={`mailto:${email}`} className="hover:text-white transition-colors">{email}</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Clock size={16} style={{ color: '#FE5200' }} />
+                <span className="text-gray-400">{hours}</span>
               </li>
             </ul>
           </div>

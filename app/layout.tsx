@@ -3,7 +3,9 @@ import { Inter, Poppins, Be_Vietnam_Pro } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import FloatingContact from '@/components/ui/FloatingContact';
 import { CartProvider } from '@/lib/context/CartContext';
+import { prisma } from '@/lib/prisma';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const poppins = Poppins({
@@ -38,36 +40,49 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const config = await prisma.langdingPage.findFirst({ where: { id: 1 } }) as any;
+  const heroPhone = config?.heroPhone || '0123.456.789';
+  const contactAddress = config?.contactAddress || '123 Đường 30/4, Quận Ninh Kiều, Cần Thơ';
+  const contactEmail = config?.contactEmail || 'contact@banhtrangtronngoncantho.vn';
+  const contactHours = config?.contactHours || '09:00 - 22:00';
+  const contactDays = config?.contactDays || 'Thứ 2 - Chủ Nhật';
+
   return (
     <html lang="vi">
       <body className={`${inter.variable} ${poppins.variable} ${beVietnamPro.variable} min-h-screen flex flex-col`} style={{ fontFamily: 'Inter, sans-serif' }}>
         <CartProvider>
-          <Header />
+          <Header phone={heroPhone} />
           <main className="flex-1">
             {children}
           </main>
-          <Footer />
+          <Footer
+            phone={heroPhone}
+            address={contactAddress}
+            email={contactEmail}
+            hours={`${contactDays}: ${contactHours}`}
+          />
+          <FloatingContact phone={heroPhone} />
         </CartProvider>
         {/* LocalBusiness Schema for Homepage */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-             __html: JSON.stringify({
+            __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "name": "Bánh Tráng Trộn Ngon Cần Thơ",
               "image": "https://res.cloudinary.com/demo/image/upload/v123456789/logo.png",
               "@id": "https://banhtrangtronngoncantho.vn",
               "url": "https://banhtrangtronngoncantho.vn",
-              "telephone": "0123456789",
+              "telephone": heroPhone,
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "123 Đường 30/4",
+                "streetAddress": contactAddress,
                 "addressLocality": "Quận Ninh Kiều",
                 "addressRegion": "Cần Thơ",
                 "postalCode": "900000",
