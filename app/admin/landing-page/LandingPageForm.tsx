@@ -16,6 +16,11 @@ type LandingPageData = {
   statsRating: string;
   statsDailyCustomers: string;
   statsExperience: string;
+  heroPhone: string;
+  contactAddress: string;
+  contactEmail: string;
+  contactHours: string;
+  contactDays: string;
 };
 
 export default function LandingPageForm({ initialData }: { initialData: LandingPageData }) {
@@ -74,13 +79,13 @@ export default function LandingPageForm({ initialData }: { initialData: LandingP
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const target = e.currentTarget;
-    
+
     startTransition(async () => {
       const submissionData = new FormData(target);
       // Đảm bảo lấy đúng URL ảnh từ state (nếu người dùng vừa upload xong)
       submissionData.set('heroBgImage', formData.heroBgImage);
       submissionData.set('aboutImage', formData.aboutImage);
-      
+
       await updateLandingPage(submissionData);
     });
   };
@@ -119,6 +124,18 @@ export default function LandingPageForm({ initialData }: { initialData: LandingP
             />
           </div>
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Số điện thoại Hotline <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              name="heroPhone"
+              value={formData.heroPhone}
+              onChange={handleInputChange}
+              required
+              placeholder="0123.456.789"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#A60817] transition"
+            />
+          </div>
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Ảnh nền Hero</label>
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3">
@@ -141,6 +158,63 @@ export default function LandingPageForm({ initialData }: { initialData: LandingP
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Contact Section */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-gray-50 px-6 py-4 border-b border-gray-100">
+          <h2 className="text-lg font-bold text-gray-800 font-be-vietnam-pro">Thông tin Liên hệ</h2>
+        </div>
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1.5 font-be-vietnam-pro">Địa chỉ cửa hàng <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              name="contactAddress"
+              value={formData.contactAddress}
+              onChange={handleInputChange}
+              required
+              placeholder="123 Đường 30/4, Quận Ninh Kiều, Cần Thơ"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#A60817] transition"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5 font-be-vietnam-pro">Email liên hệ <span className="text-red-500">*</span></label>
+            <input
+              type="email"
+              name="contactEmail"
+              value={formData.contactEmail}
+              onChange={handleInputChange}
+              required
+              placeholder="contact@example.com"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#A60817] transition"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5 font-be-vietnam-pro">Ngày hoạt động <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              name="contactDays"
+              value={formData.contactDays}
+              onChange={handleInputChange}
+              required
+              placeholder="Thứ 2 - Chủ Nhật"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#A60817] transition"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5 font-be-vietnam-pro">Giờ hoạt động <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              name="contactHours"
+              value={formData.contactHours}
+              onChange={handleInputChange}
+              required
+              placeholder="09:00 - 22:00"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#A60817] transition"
+            />
           </div>
         </div>
       </div>

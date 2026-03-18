@@ -80,6 +80,11 @@ model LangdingPage {
   statsRating         String   @default("4.9/5")
   statsDailyCustomers String   @default("500+")
   statsExperience     String   @default("5 năm")
+  heroPhone           String   @default("0123.456.789")
+  contactAddress      String   @default("123 Đường 30/4, Quận Ninh Kiều, Cần Thơ")
+  contactEmail        String   @default("contact@banhtrangtronngoncantho.vn")
+  contactHours        String   @default("09:00 - 22:00")
+  contactDays         String   @default("Thứ 2 - Chủ Nhật")
 
   updatedAt           DateTime @updatedAt
 }

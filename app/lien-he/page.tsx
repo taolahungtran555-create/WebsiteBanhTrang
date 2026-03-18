@@ -1,12 +1,20 @@
 import type { Metadata } from 'next';
 import { MapPin, Phone, Clock, Mail } from 'lucide-react';
+import { prisma } from '@/lib/prisma';
 
 export const metadata: Metadata = {
   title: 'Liên Hệ Đặt Bánh Tráng Trộn Cần Thơ | Giao Hỏa Tốc',
   description: 'Thông tin liên hệ, địa chỉ bản đồ và số điện thoại tiệm bánh tráng trộn ngon nhất Cần Thơ. Đặt hàng qua hotline để được freeship Ninh Kiều.',
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const config = await prisma.langdingPage.findFirst({ where: { id: 1 } }) as any;
+  const heroPhone = config?.heroPhone || '0123.456.789';
+  const contactAddress = config?.contactAddress || '123 Đường 30/4, Quận Ninh Kiều, Cần Thơ';
+  const contactEmail = config?.contactEmail || 'contact@banhtrangtronngoncantho.vn';
+  const contactHours = config?.contactHours || '09:00 - 22:00';
+  const contactDays = config?.contactDays || 'Thứ 2 - Chủ Nhật';
+
   return (
     <div className="min-h-screen bg-gray-50" style={{ fontFamily: 'Inter, sans-serif' }}>
 
@@ -49,7 +57,7 @@ export default function ContactPage() {
                 <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                   Địa Chỉ Cửa Hàng
                 </h3>
-                <p className="text-gray-600">123 Đường 30/4, Phường Hưng Lợi, Quận Ninh Kiều, Cần Thơ</p>
+                <p className="text-gray-600">{contactAddress}</p>
               </div>
             </div>
 
@@ -65,11 +73,11 @@ export default function ContactPage() {
                   Hotline Đặt Hàng
                 </h3>
                 <a
-                  href="tel:0123456789"
+                  href={`tel:${heroPhone.replace(/\D/g, '')}`}
                   className="font-extrabold text-3xl transition-opacity hover:opacity-80"
                   style={{ color: '#A60817', fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}
                 >
-                  0123.456.789
+                  {heroPhone}
                 </a>
                 <p className="text-sm text-gray-500 mt-1">Hỗ trợ đặt hộ qua Zalo/Phone</p>
               </div>
@@ -86,7 +94,7 @@ export default function ContactPage() {
                 <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                   Giờ Hoạt Động
                 </h3>
-                <p className="text-gray-600">Thứ 2 - Chủ Nhật: 09:00 - 22:00</p>
+                <p className="text-gray-600">{contactDays}: {contactHours}</p>
               </div>
             </div>
 
@@ -101,13 +109,15 @@ export default function ContactPage() {
                 <h3 className="text-lg font-bold text-gray-900 mb-1" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>
                   Email
                 </h3>
-                <p className="text-gray-600">hello@banhtrangtronngoncantho.vn</p>
+                <a href={`mailto:${contactEmail}`} className="text-gray-600 hover:text-[#A60817] transition-colors">
+                  {contactEmail}
+                </a>
               </div>
             </div>
 
             <div className="pt-4">
               <a
-                href="tel:0123456789"
+                href={`tel:${heroPhone.replace(/\D/g, '')}`}
                 className="inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-xl text-white transition-all hover:scale-105 hover:shadow-lg"
                 style={{ background: 'linear-gradient(135deg, #A60817, #FE5200)' }}
               >
