@@ -15,6 +15,7 @@ model MenuItem {
   imageUrl    String
   category    String
   slug        String      @unique
+  isAvailable Boolean     @default(true)
   createdAt   DateTime    @default(now())
   OrderItem   OrderItem[]
 }
@@ -85,6 +86,11 @@ model LangdingPage {
   contactEmail        String   @default("contact@banhtrangtronngoncantho.vn")
   contactHours        String   @default("09:00 - 22:00")
   contactDays         String   @default("Thứ 2 - Chủ Nhật")
+
+  // Social Links
+  facebookUrl         String   @default("#")
+  instagramUrl        String   @default("#")
+  youtubeUrl          String   @default("#")
 
   updatedAt           DateTime @updatedAt
 }

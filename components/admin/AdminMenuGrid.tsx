@@ -42,7 +42,7 @@ export default function AdminMenuGrid() {
           <p className="text-sm text-gray-500">Quản lý đơn hàng, trạng thái thanh toán và giao hàng.</p>
         </Link>
 
-        <Link href="/admin/landing-page" className="group relative bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 overflow-hidden hover:-translate-y-1">
+        <Link href="/admin/langding-page" className="group relative bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 overflow-hidden hover:-translate-y-1">
           <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
             <ChevronRight className="text-gray-400" />
           </div>

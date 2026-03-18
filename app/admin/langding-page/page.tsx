@@ -40,6 +40,9 @@ export default async function AdminLandingPagePage() {
     contactEmail: config?.contactEmail || defaults.contactEmail,
     contactHours: config?.contactHours || defaults.contactHours,
     contactDays: config?.contactDays || defaults.contactDays,
+    facebookUrl: config?.facebookUrl || '#',
+    instagramUrl: config?.instagramUrl || '#',
+    youtubeUrl: config?.youtubeUrl || '#',
   };
 
   return (

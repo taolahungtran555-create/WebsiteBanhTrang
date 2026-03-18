@@ -11,6 +11,7 @@ export async function createProduct(formData: FormData) {
   const imageUrl = formData.get('imageUrl') as string;
   const category = formData.get('category') as string;
   const slug = formData.get('slug') as string;
+  const isAvailable = formData.get('isAvailable') === 'true';
 
   try {
     await prisma.menuItem.create({
@@ -21,6 +22,7 @@ export async function createProduct(formData: FormData) {
         imageUrl,
         category,
         slug,
+        isAvailable,
       },
     });
   } catch (error) {
@@ -30,6 +32,7 @@ export async function createProduct(formData: FormData) {
 
   revalidatePath('/admin/products');
   revalidatePath('/menu');
+  revalidatePath('/');
   redirect('/admin/products');
 }
 
@@ -40,6 +43,7 @@ export async function updateProduct(id: number, formData: FormData) {
   const imageUrl = formData.get('imageUrl') as string;
   const category = formData.get('category') as string;
   const slug = formData.get('slug') as string;
+  const isAvailable = formData.get('isAvailable') === 'true';
 
   try {
     await prisma.menuItem.update({
@@ -51,6 +55,7 @@ export async function updateProduct(id: number, formData: FormData) {
         imageUrl,
         category,
         slug,
+        isAvailable,
       },
     });
   } catch (error) {

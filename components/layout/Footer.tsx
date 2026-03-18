@@ -5,12 +5,18 @@ export default function Footer({
   phone,
   address,
   email,
-  hours
+  hours,
+  facebookUrl = '#',
+  instagramUrl = '#',
+  youtubeUrl = '#',
 }: {
   phone: string;
   address: string;
   email: string;
   hours: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  youtubeUrl?: string;
 }) {
   return (
     <footer style={{ background: '#1a0505', color: 'white' }} className="pt-12 pb-6">
@@ -40,7 +46,9 @@ export default function Footer({
             </p>
             <div className="flex gap-3 mt-4">
               <a
-                href="#"
+                href={facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:opacity-80"
                 style={{ background: '#A60817' }}
                 aria-label="Facebook"
@@ -48,7 +56,9 @@ export default function Footer({
                 <Facebook size={16} />
               </a>
               <a
-                href="#"
+                href={instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:opacity-80"
                 style={{ background: '#FE5200' }}
                 aria-label="Instagram"
@@ -56,7 +66,9 @@ export default function Footer({
                 <Instagram size={16} />
               </a>
               <a
-                href="#"
+                href={youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:opacity-80"
                 style={{ background: '#8A2F2C' }}
                 aria-label="Youtube"
