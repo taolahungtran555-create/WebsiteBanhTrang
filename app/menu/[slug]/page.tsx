@@ -13,9 +13,12 @@ interface ProductDetailPageProps {
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
   const { slug } = await params;
 
-  const product = await prisma.menuItem.findUnique({
-    where: { slug },
-  });
+  const [product, config] = await Promise.all([
+    prisma.menuItem.findUnique({ where: { slug } }),
+    prisma.langdingPage.findFirst({ where: { id: 1 } })
+  ]);
+
+  const heroPhone = (config as any)?.heroPhone || '0123.456.789';
 
   if (!product) {
     notFound();
@@ -100,7 +103,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 font-medium">Ship hỏa tốc 30p</p>
-                  <a href="tel:0123456789" className="text-sm font-bold text-gray-900 hover:text-[#A60817]">0123 456 789</a>
+                  <a href={`tel:${heroPhone.replace(/\D/g, '')}`} className="text-sm font-bold text-gray-900 hover:text-[#A60817]">{heroPhone}</a>
                 </div>
               </div>
               <div className="h-8 w-[1px] bg-gray-200 hidden sm:block"></div>

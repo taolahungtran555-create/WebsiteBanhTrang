@@ -20,6 +20,9 @@ export async function updateLandingPage(formData: FormData) {
     contactEmail: formData.get('contactEmail') as string,
     contactHours: formData.get('contactHours') as string,
     contactDays: formData.get('contactDays') as string,
+    facebookUrl: formData.get('facebookUrl') as string,
+    instagramUrl: formData.get('instagramUrl') as string,
+    youtubeUrl: formData.get('youtubeUrl') as string,
   };
 
   await prisma.langdingPage.upsert({
@@ -29,5 +32,5 @@ export async function updateLandingPage(formData: FormData) {
   });
 
   revalidatePath('/');
-  revalidatePath('/admin/landing-page');
+  revalidatePath('/admin/langding-page');
 }

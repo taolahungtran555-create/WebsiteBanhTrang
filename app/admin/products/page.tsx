@@ -91,6 +91,17 @@ export default async function AdminProductsPage() {
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {product.price.toLocaleString('vi-VN')}₫
                           </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">
+                            {product.isAvailable ? (
+                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Đang bán
+                              </span>
+                            ) : (
+                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 border border-gray-200">
+                                Tạm ẩn
+                              </span>
+                            )}
+                          </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div className="flex justify-end items-center space-x-4">
                               <Link href={`/admin/products/${product.id}/edit`} className="text-indigo-600 hover:text-indigo-900">

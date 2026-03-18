@@ -20,6 +20,7 @@ const LP_DEFAULTS = {
 export default async function Home() {
   const [hotProducts, blogPosts, lpConfig] = await Promise.all([
     prisma.menuItem.findMany({
+      where: { isAvailable: true },
       take: 4,
       orderBy: { createdAt: 'desc' }
     }),

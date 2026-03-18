@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function MenuPage() {
   const menuItems = await prisma.menuItem.findMany({
+    where: { isAvailable: true },
     orderBy: { category: 'asc' }
   });
 

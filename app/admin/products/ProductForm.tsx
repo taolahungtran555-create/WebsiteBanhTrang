@@ -15,6 +15,7 @@ type MenuItem = {
   imageUrl: string;
   category: string;
   slug: string;
+  isAvailable?: boolean;
 };
 
 export default function ProductForm({ initialData }: { initialData?: MenuItem }) {
@@ -38,6 +39,7 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
 
     const formData = new FormData(e.currentTarget);
     formData.set('imageUrl', imageUrl);
+    formData.set('isAvailable', (e.currentTarget.elements.namedItem('isAvailable') as HTMLInputElement).checked ? 'true' : 'false');
 
     try {
       let res;
@@ -282,6 +284,19 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
                       className="shadow-sm focus:ring-[#FE5200] focus:border-[#FE5200] block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
                     />
                   </div>
+                </div>
+
+                <div className="sm:col-span-6 flex items-center bg-gray-50 p-3 rounded-md border border-gray-200">
+                  <input
+                    id="isAvailable"
+                    name="isAvailable"
+                    type="checkbox"
+                    defaultChecked={initialData ? initialData.isAvailable : true}
+                    className="h-5 w-5 text-[#A60817] focus:ring-[#A60817] border-gray-300 rounded cursor-pointer"
+                  />
+                  <label htmlFor="isAvailable" className="ml-3 block text-sm text-gray-900 font-semibold cursor-pointer">
+                    Sản phẩm đang kinh doanh (Hiển thị trên thực đơn)
+                  </label>
                 </div>
               </div>
 

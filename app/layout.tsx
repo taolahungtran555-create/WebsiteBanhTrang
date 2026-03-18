@@ -51,6 +51,9 @@ export default async function RootLayout({
   const contactEmail = config?.contactEmail || 'contact@banhtrangtronngoncantho.vn';
   const contactHours = config?.contactHours || '09:00 - 22:00';
   const contactDays = config?.contactDays || 'Thứ 2 - Chủ Nhật';
+  const facebookUrl = config?.facebookUrl || '#';
+  const instagramUrl = config?.instagramUrl || '#';
+  const youtubeUrl = config?.youtubeUrl || '#';
 
   return (
     <html lang="vi">
@@ -65,6 +68,9 @@ export default async function RootLayout({
             address={contactAddress}
             email={contactEmail}
             hours={`${contactDays}: ${contactHours}`}
+            facebookUrl={facebookUrl}
+            instagramUrl={instagramUrl}
+            youtubeUrl={youtubeUrl}
           />
           <FloatingContact phone={heroPhone} />
         </CartProvider>
