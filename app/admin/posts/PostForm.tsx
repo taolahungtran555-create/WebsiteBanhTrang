@@ -71,6 +71,12 @@ export default function PostForm({ initialData }: { initialData?: Post }) {
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
     const uploadPreset = 'ml_default'; // Standard unsigned preset name
 
+    if (!cloudName) {
+      setError('Lỗi: Biến môi trường NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME chưa được tải. Nếu bạn vừa đổi file .env, vui lòng tắt terminal và chạy lại lệnh "npm run dev".');
+      setIsUploading(false);
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', uploadPreset);
