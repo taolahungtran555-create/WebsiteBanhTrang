@@ -23,6 +23,9 @@ export async function createPost(formData: FormData) {
   const coverImage = formData.get('coverImage') as string;
   const tagsRaw = formData.get('tags') as string;
   const slug = formData.get('slug') as string || generateSlug(title);
+  const seoTitle = formData.get('seoTitle') as string | null;
+  const seoDescription = formData.get('seoDescription') as string | null;
+  const seoKeyword = formData.get('seoKeyword') as string | null;
   const tags = tagsRaw
     ? tagsRaw.split(',').map((t) => t.trim()).filter(Boolean)
     : [];
@@ -36,6 +39,9 @@ export async function createPost(formData: FormData) {
         content,
         coverImage,
         tags,
+        seoTitle,
+        seoDescription,
+        seoKeyword,
       },
     });
   } catch (error) {
@@ -55,6 +61,9 @@ export async function updatePost(id: number, formData: FormData) {
   const coverImage = formData.get('coverImage') as string;
   const tagsRaw = formData.get('tags') as string;
   const slug = formData.get('slug') as string;
+  const seoTitle = formData.get('seoTitle') as string | null;
+  const seoDescription = formData.get('seoDescription') as string | null;
+  const seoKeyword = formData.get('seoKeyword') as string | null;
   const tags = tagsRaw
     ? tagsRaw.split(',').map((t) => t.trim()).filter(Boolean)
     : [];
@@ -69,6 +78,9 @@ export async function updatePost(id: number, formData: FormData) {
         content,
         coverImage,
         tags,
+        seoTitle,
+        seoDescription,
+        seoKeyword,
       },
     });
   } catch (error) {
