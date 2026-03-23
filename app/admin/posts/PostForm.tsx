@@ -1,10 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { ArrowLeft, Save, Upload, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { createPost, updatePost } from './actions';
 import Image from 'next/image';
+import SeoMetaBox from '@/components/admin/SeoMetaBox';
+import SeoAnalyzer from './SeoAnalyzer';
+
+const RichTextEditor = dynamic(() => import('@/components/admin/RichTextEditor'), { ssr: false });
 
 type Post = {
   id?: number;
@@ -14,6 +19,9 @@ type Post = {
   content: string;
   coverImage: string;
   tags: string[];
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  seoKeyword?: string | null;
 };
 
 export default function PostForm({ initialData }: { initialData?: Post }) {
@@ -22,6 +30,15 @@ export default function PostForm({ initialData }: { initialData?: Post }) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState('');
   const [coverImage, setCoverImage] = useState(initialData?.coverImage || '');
+  const [content, setContent] = useState(initialData?.content || '');
+  
+  // Controlled states for SEO preview
+  const [title, setTitle] = useState(initialData?.title || '');
+  const [slug, setSlug] = useState(initialData?.slug || '');
+  const [excerpt, setExcerpt] = useState(initialData?.excerpt || '');
+  const [seoTitle, setSeoTitle] = useState(initialData?.seoTitle || '');
+  const [seoDescription, setSeoDescription] = useState(initialData?.seoDescription || '');
+  const [seoKeyword, setSeoKeyword] = useState(initialData?.seoKeyword || '');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,6 +53,12 @@ export default function PostForm({ initialData }: { initialData?: Post }) {
 
     const formData = new FormData(e.currentTarget);
     formData.set('coverImage', coverImage);
+    formData.set('title', title);
+    formData.set('slug', slug);
+    formData.set('excerpt', excerpt);
+    formData.set('seoTitle', seoTitle);
+    formData.set('seoDescription', seoDescription);
+    formData.set('seoKeyword', seoKeyword);
 
     try {
       let res;
@@ -102,9 +125,10 @@ export default function PostForm({ initialData }: { initialData?: Post }) {
   }
 
   function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
     if (!isEditing) {
-      const title = e.target.value;
-      const generatedSlug = title
+      const generatedSlug = newTitle
         .toLowerCase()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
@@ -114,10 +138,18 @@ export default function PostForm({ initialData }: { initialData?: Post }) {
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-');
 
-      const slugInput = document.getElementById('slug') as HTMLInputElement;
-      if (slugInput) slugInput.value = generatedSlug;
+      setSlug(generatedSlug);
     }
   }
+
+  const seoData = {
+    title,
+    content,
+    slug,
+    seoTitle,
+    seoDescription,
+    seoKeyword,
+  };
 
   return (
     <div className="pt-24 pb-10">
@@ -153,7 +185,7 @@ export default function PostForm({ initialData }: { initialData?: Post }) {
                       name="title"
                       id="title"
                       required
-                      defaultValue={initialData?.title}
+                      value={title}
                       onChange={handleTitleChange}
                       placeholder="Nhập tiêu đề bài viết..."
                       className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
@@ -171,7 +203,8 @@ export default function PostForm({ initialData }: { initialData?: Post }) {
                       name="slug"
                       id="slug"
                       required
-                      defaultValue={initialData?.slug}
+                      value={slug}
+                      onChange={(e) => setSlug(e.target.value)}
                       readOnly={isEditing}
                       className={`shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border ${isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}`}
                     />
@@ -261,7 +294,8 @@ export default function PostForm({ initialData }: { initialData?: Post }) {
                       name="excerpt"
                       rows={3}
                       required
-                      defaultValue={initialData?.excerpt}
+                      value={excerpt}
+                      onChange={(e) => setExcerpt(e.target.value)}
                       placeholder="Mô tả ngắn gọn về nội dung bài viết (hiển thị ở trang danh sách)..."
                       className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
                     />
@@ -270,21 +304,42 @@ export default function PostForm({ initialData }: { initialData?: Post }) {
 
                 {/* Content */}
                 <div className="sm:col-span-6">
-                  <label htmlFor="content" className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Nội dung bài viết <span className="text-red-500">*</span>
                   </label>
-                  <div className="mt-1">
-                    <textarea
-                      id="content"
-                      name="content"
-                      rows={16}
-                      required
-                      defaultValue={initialData?.content}
-                      placeholder="Viết nội dung bài viết đầy đủ tại đây..."
-                      className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 px-3 border font-mono text-sm"
-                    />
+                  <RichTextEditor
+                    content={content}
+                    onChange={setContent}
+                    placeholder="Viết nội dung bài viết đầy đủ tại đây..."
+                  />
+                  {/* Hidden input để form submit nhận nội dung HTML */}
+                  <input type="hidden" name="content" value={content} />
+                  {!content || content === '<p></p>' ? (
+                    <p className="mt-1 text-xs text-red-400">Vui lòng nhập nội dung bài viết.</p>
+                  ) : (
+                    <p className="mt-1 text-xs text-gray-400">Hỗ trợ định dạng HTML. Dùng thanh công cụ phía trên để định dạng.</p>
+                  )}
+                </div>
+
+                {/* SEO Meta Box */}
+                <div className="sm:col-span-6">
+                  <SeoMetaBox
+                    seoTitle={seoTitle}
+                    setSeoTitle={setSeoTitle}
+                    seoDescription={seoDescription}
+                    setSeoDescription={setSeoDescription}
+                    seoKeyword={seoKeyword}
+                    setSeoKeyword={setSeoKeyword}
+                    slug={slug}
+                    setSlug={setSlug}
+                    defaultTitle={title}
+                    defaultExcerpt={excerpt}
+                    content={content}
+                  />
+
+                  <div className="mt-8">
+                    <SeoAnalyzer data={seoData} />
                   </div>
-                  <p className="mt-1 text-xs text-gray-500">Hỗ trợ văn bản thuần. Xuống dòng bằng Enter.</p>
                 </div>
 
               </div>

@@ -25,10 +25,13 @@ model Post {
   title       String
   slug        String   @unique
   excerpt     String
-  content     String
-  coverImage  String
-  tags        String[]
-  publishedAt DateTime @default(now())
+  content        String
+  coverImage     String
+  tags           String[]
+  seoTitle       String?
+  seoDescription String?
+  seoKeyword     String?
+  publishedAt    DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
 
