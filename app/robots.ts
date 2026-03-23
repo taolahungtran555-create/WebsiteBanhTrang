@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/api/',
     },
-    sitemap: 'https://banhtrangtronngoncantho.vn/sitemap.xml',
+    sitemap: 'https://banhtrangtron.vercel.app/sitemap.xml',
   };
 }
