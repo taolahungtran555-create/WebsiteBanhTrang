@@ -63,7 +63,7 @@ export default function Header({ phone }: { phone: string }) {
                   {link.label}
                 </Link>
               ))}
-              
+
               {/* Cart Button */}
               <button
                 onClick={() => setCartOpen(true)}
@@ -146,20 +146,20 @@ export default function Header({ phone }: { phone: string }) {
 
       {/* Cart Drawer Overlay */}
       {cartOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm transition-opacity"
           onClick={() => setCartOpen(false)}
         />
       )}
 
       {/* Cart Drawer */}
-      <div 
+      <div
         className={`fixed top-0 right-0 h-full w-full max-w-md bg-white z-[101] shadow-2xl transition-transform duration-300 ease-in-out transform ${cartOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <div className="flex flex-col h-full">
           <div className="p-6 border-b flex items-center justify-between">
             <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-be-vietnam-pro), "Be Vietnam Pro", sans-serif' }}>Giỏ hàng</h2>
-            <button 
+            <button
               onClick={() => setCartOpen(false)}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
@@ -172,7 +172,7 @@ export default function Header({ phone }: { phone: string }) {
               <div className="h-full flex flex-col items-center justify-center text-center opacity-50">
                 <ShoppingCart size={64} className="mb-4" />
                 <p className="text-lg">Giỏ hàng của bạn đang trống</p>
-                <button 
+                <button
                   onClick={() => {
                     setCartOpen(false);
                     window.location.href = '/menu';
@@ -196,14 +196,14 @@ export default function Header({ phone }: { phone: string }) {
                       </div>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center bg-gray-100 rounded-lg px-2">
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
                             className="p-1 hover:text-[#A60817]"
                           >
                             <Minus size={14} />
                           </button>
                           <span className="w-8 text-center text-sm font-bold">{item.quantity}</span>
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.id, Math.min(99, item.quantity + 1))}
                             disabled={item.quantity >= 99}
                             className="p-1 hover:text-[#A60817] disabled:opacity-30 disabled:cursor-not-allowed"
@@ -211,7 +211,7 @@ export default function Header({ phone }: { phone: string }) {
                             <Plus size={14} />
                           </button>
                         </div>
-                        <button 
+                        <button
                           onClick={() => removeFromCart(item.id)}
                           className="text-gray-400 hover:text-red-500 transition-colors"
                         >

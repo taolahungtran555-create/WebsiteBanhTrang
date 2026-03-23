@@ -38,6 +38,9 @@ export const metadata: Metadata = {
     locale: 'vi_VN',
     type: 'website',
   },
+  icons: {
+    icon: '/logo.jpg?v=1',
+  },
 };
 
 export default async function RootLayout({
