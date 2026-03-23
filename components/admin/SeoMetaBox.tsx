@@ -32,7 +32,7 @@ export default function SeoMetaBox({
   defaultExcerpt,
   content,
   siteName = 'Bánh Tráng Trộn Ngon Cần Thơ',
-  baseUrl = 'https://banhtrangtronngoncantho.vn'
+  baseUrl = 'https://banhtrangtron.vercel.app'
 }: SeoMetaBoxProps) {
   
   // Process variables for preview
