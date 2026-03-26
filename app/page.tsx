@@ -4,6 +4,8 @@ import BlogCard from "@/components/ui/BlogCard";
 import { ChevronRight, Star, Award, Clock, Flame } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic'; // Luôn fetch data mới từ DB
+
 const LP_DEFAULTS = {
   heroTitle:           'Bánh Tráng Trộn Ngon Cần Thơ',
   heroSubtitle:        'Chua cay đậm đà – mê hoặc từng miếng cắn. Hương vị đặc trưng miền Tây với bò khô, trứng cút, đậu phộng rang và sa tế cay nồng.',
