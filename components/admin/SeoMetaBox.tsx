@@ -34,7 +34,7 @@ export default function SeoMetaBox({
   siteName = 'Bánh Tráng Trộn Ngon Cần Thơ',
   baseUrl = 'https://banhtrangtron.vercel.app'
 }: SeoMetaBoxProps) {
-  
+
   // Process variables for preview
   const parseVariables = (text: string) => {
     return text
@@ -55,7 +55,7 @@ export default function SeoMetaBox({
     const seoTitleLower = finalTitle.toLowerCase();
     const descLower = finalDescription.toLowerCase();
     const slugLower = slug.toLowerCase();
-    
+
     // Strip HTML for content analysis
     const cleanContent = content.replace(/<[^>]*>?/gm, '').toLowerCase();
     const words = cleanContent.split(/\s+/).filter(w => w.length > 0);
@@ -140,7 +140,7 @@ export default function SeoMetaBox({
           </svg>
           <h2 className="font-semibold text-gray-700">SEO Cấu Hình & Phân Tích</h2>
         </div>
-        
+
         {analysis && (
           <div className={`flex items-center gap-2 px-3 py-1 rounded-full border font-bold text-sm ${getScoreColor(analysis.score)}`}>
             <span>SEO Score:</span>
