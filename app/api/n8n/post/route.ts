@@ -124,7 +124,18 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(
-      { message: 'Tạo bài viết thành công.', post: newPost },
+      {
+        message: 'Tạo bài viết thành công.',
+        post: newPost,
+        _debug: {
+          tagsReceived: body.tags,
+          tagsType: typeof body.tags,
+          tagsIsArray: Array.isArray(body.tags),
+          processedTags: tags,
+          seoKeywordReceived: body.seoKeyword ?? body.seokeyword,
+          bodyKeys: Object.keys(body),
+        },
+      },
       { status: 201 }
     );
   } catch (error: any) {
