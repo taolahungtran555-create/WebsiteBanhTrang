@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+const API_VERSION = 'v3.0'; // Tăng version mỗi lần deploy để kiểm tra
+
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
@@ -13,53 +15,38 @@ function generateSlug(title: string): string {
     .replace(/-+/g, '-');
 }
 
-/**
- * Chuyển đổi bất kỳ định dạng tags nào từ n8n sang string[]
- * n8n có thể gửi: Array, Object với numeric keys, JSON string, hoặc chuỗi phân tách dấu phẩy
- */
-function parseTags(rawTags: any): string[] {
+function parseTags(rawTags: unknown): string[] {
   if (rawTags === null || rawTags === undefined) return [];
 
-  // Case 1: Mảng JS thật sự (thường nhất khi n8n nhận Array từ JSON.parse)
   if (Array.isArray(rawTags)) {
     return rawTags
-      .map((t: any) => {
+      .map((t: unknown) => {
         if (typeof t === 'object' && t !== null) {
-          return String(t.value || t.name || t.label || Object.values(t)[0] || '').trim();
+          const obj = t as Record<string, unknown>;
+          return String(obj.value || obj.name || obj.label || Object.values(obj)[0] || '').trim();
         }
         return String(t).trim();
       })
       .filter(Boolean);
   }
 
-  // Case 2: Object với numeric keys {"0":"tag1","1":"tag2"} - n8n "Using Fields Below" body
   if (typeof rawTags === 'object') {
-    return Object.values(rawTags)
-      .map((t: any) => String(t).trim())
+    return Object.values(rawTags as Record<string, unknown>)
+      .map((t) => String(t).trim())
       .filter(Boolean);
   }
 
-  // Case 3: String
   if (typeof rawTags === 'string') {
     const trimmed = rawTags.trim();
     if (!trimmed) return [];
-
-    // Thử parse JSON nếu là JSON array string
     if (trimmed.startsWith('[')) {
       try {
-        const parsed = JSON.parse(trimmed);
-        return parseTags(parsed); // recursive với kết quả đã parse
+        const parsed: unknown = JSON.parse(trimmed);
+        return parseTags(parsed);
       } catch {
-        // Nếu lỗi thì bóc tách thủ công
-        return trimmed
-          .replace(/[\[\]"']/g, '')
-          .split(',')
-          .map((t) => t.trim())
-          .filter(Boolean);
+        return trimmed.replace(/[\[\]"']/g, '').split(',').map((t) => t.trim()).filter(Boolean);
       }
     }
-
-    // Chuỗi phân cách bằng dấu phẩy
     return trimmed.split(',').map((t) => t.trim()).filter(Boolean);
   }
 
@@ -67,89 +54,78 @@ function parseTags(rawTags: any): string[] {
 }
 
 export async function POST(request: Request) {
+  let rawText = '';
+  let body: Record<string, unknown> = {};
+
   try {
-    // Đọc raw text trước để tránh lỗi parse JSON
-    const rawText = await request.text();
-    console.log('[n8n API] Raw body text:', rawText.substring(0, 500));
+    rawText = await request.text();
+    body = JSON.parse(rawText) as Record<string, unknown>;
+  } catch {
+    return NextResponse.json(
+      { error: 'Body không phải JSON hợp lệ.', version: API_VERSION },
+      { status: 400 }
+    );
+  }
 
-    let body: any = {};
-    try {
-      body = JSON.parse(rawText);
-    } catch (parseError) {
-      console.error('[n8n API] JSON parse error:', parseError);
-      return NextResponse.json(
-        { error: 'Body không phải JSON hợp lệ.', raw: rawText.substring(0, 200) },
-        { status: 400 }
-      );
-    }
+  try {
+    const title = body.title as string | undefined;
+    const content = body.content as string | undefined;
 
-    console.log('[n8n API] Parsed body keys:', Object.keys(body));
-    console.log('[n8n API] tags raw:', JSON.stringify(body.tags));
-    console.log('[n8n API] seoKeyword raw:', body.seoKeyword ?? body.seokeyword);
-
-    // Đọc các trường - hỗ trợ cả camelCase và lowercase
-    const title = body.title;
-    const content = body.content;
-    const excerpt = body.excerpt || '';
-    const coverImage = body.coverImage || body.coverimage || '';
-    const providedSlug = body.slug;
-    const seoTitle = body.seoTitle || body.seotitle || null;
-    const seoDescription = body.seoDescription || body.seodescription || null;
-    const seoKeyword = body.seoKeyword || body.seokeyword || null;
-
-    // Validation
     if (!title || !content) {
       return NextResponse.json(
-        { error: 'Thiếu title hoặc content.' },
+        { error: 'Thiếu title hoặc content.', version: API_VERSION },
         { status: 400 }
       );
     }
 
+    const excerpt = String(body.excerpt || '');
+    const coverImage = String(body.coverImage || body.coverimage || '');
+    const providedSlug = body.slug as string | undefined;
+    const seoTitle = (body.seoTitle || body.seotitle) as string | undefined;
+    const seoDescription = (body.seoDescription || body.seodescription) as string | undefined;
+    const seoKeyword = (body.seoKeyword || body.seokeyword) as string | undefined;
     const slug = providedSlug || generateSlug(title);
     const tags = parseTags(body.tags);
-    console.log('[n8n API] Processed tags:', tags);
 
     const newPost = await prisma.post.create({
       data: {
-        title: String(title),
-        slug: String(slug),
-        excerpt: String(excerpt),
-        content: String(content),
-        coverImage: String(coverImage),
+        title,
+        slug,
+        excerpt,
+        content,
+        coverImage,
         tags,
-        seoTitle: seoTitle ? String(seoTitle) : null,
-        seoDescription: seoDescription ? String(seoDescription) : null,
-        seoKeyword: seoKeyword ? String(seoKeyword) : null,
+        seoTitle: seoTitle || null,
+        seoDescription: seoDescription || null,
+        seoKeyword: seoKeyword || null,
       },
     });
 
-    return NextResponse.json(
-      {
-        message: 'Tạo bài viết thành công.',
-        post: newPost,
-        _debug: {
-          tagsReceived: body.tags,
-          tagsType: typeof body.tags,
-          tagsIsArray: Array.isArray(body.tags),
-          processedTags: tags,
-          seoKeywordReceived: body.seoKeyword ?? body.seokeyword,
-          bodyKeys: Object.keys(body),
-        },
+    return NextResponse.json({
+      message: 'Tạo bài viết thành công.',
+      version: API_VERSION,
+      post: newPost,
+      _debug: {
+        tagsRawType: typeof body.tags,
+        tagsIsArray: Array.isArray(body.tags),
+        tagsRaw: body.tags,
+        processedTags: tags,
+        seoKeywordRaw: body.seoKeyword,
+        seoKeywordLower: body.seokeyword,
+        bodyKeys: Object.keys(body),
       },
-      { status: 201 }
-    );
-  } catch (error: any) {
-    console.error('[n8n API] Error:', error);
+    }, { status: 201 });
 
-    if (error.code === 'P2002') {
+  } catch (error: unknown) {
+    const err = error as { code?: string; message?: string };
+    if (err.code === 'P2002') {
       return NextResponse.json(
-        { error: 'Slug đã tồn tại. Bài viết có thể đã được tạo trước đó.' },
+        { error: 'Slug đã tồn tại.', version: API_VERSION },
         { status: 409 }
       );
     }
-
     return NextResponse.json(
-      { error: 'Lỗi Server.', details: error.message },
+      { error: 'Lỗi Server.', details: err.message, version: API_VERSION },
       { status: 500 }
     );
   }
