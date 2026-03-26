@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Bánh Tráng Trộn Ngon Cần Thơ | Ship Tận Nơi',
     description: 'Thưởng thức bánh tráng trộn chuẩn vị ngon nhất tại Cần Thơ.',
-    url: 'https://banhtrangtronngoncantho.vn',
-    siteName: 'Bánh Tráng Trộn Ngon Cần Thơ',
+    url: 'https://banhtrangtron.vercel.app',
+    siteName: 'food',
     images: [
       {
-        url: 'https://res.cloudinary.com/demo/image/upload/v123456789/thumbnail.jpg',
+        url: 'https://banhtrangtron.vercel.app/logo.jpg',
         width: 1200,
         height: 630,
       },
@@ -39,7 +39,9 @@ export const metadata: Metadata = {
     type: 'website',
   },
   icons: {
-    icon: '/logo.jpg?v=1',
+    icon: '/logo.jpg',
+    shortcut: '/logo.jpg',
+    apple: '/logo.jpg',
   },
 };
 
@@ -77,46 +79,49 @@ export default async function RootLayout({
           />
           <FloatingContact phone={heroPhone} />
         </CartProvider>
-        {/* LocalBusiness Schema for Homepage */}
+        {/* Google Site Name & Business Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              "name": "Bánh Tráng Trộn Ngon Cần Thơ",
-              "image": "https://res.cloudinary.com/demo/image/upload/v123456789/logo.png",
-              "@id": "https://banhtrangtronngoncantho.vn",
-              "url": "https://banhtrangtronngoncantho.vn",
-              "telephone": heroPhone,
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": contactAddress,
-                "addressLocality": "Quận Ninh Kiều",
-                "addressRegion": "Cần Thơ",
-                "postalCode": "900000",
-                "addressCountry": "VN"
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "food",
+                "url": "https://banhtrangtron.vercel.app"
               },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": 10.0299337,
-                "longitude": 105.7706153
-              },
-              "openingHoursSpecification": {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": [
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday",
-                  "Sunday"
-                ],
-                "opens": "09:00",
-                "closes": "22:00"
+              {
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": "food",
+                "image": "https://banhtrangtron.vercel.app/logo.jpg",
+                "logo": "https://banhtrangtron.vercel.app/logo.jpg",
+                "@id": "https://banhtrangtron.vercel.app",
+                "url": "https://banhtrangtron.vercel.app",
+                "telephone": heroPhone,
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": contactAddress,
+                  "addressLocality": "Quận Ninh Kiều",
+                  "addressRegion": "Cần Thơ",
+                  "postalCode": "900000",
+                  "addressCountry": "VN"
+                },
+                "geo": {
+                  "@type": "GeoCoordinates",
+                  "latitude": 10.0299337,
+                  "longitude": 105.7706153
+                },
+                "openingHoursSpecification": {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": [
+                    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+                  ],
+                  "opens": "09:00",
+                  "closes": "22:00"
+                }
               }
-            })
+            ])
           }}
         />
       </body>
