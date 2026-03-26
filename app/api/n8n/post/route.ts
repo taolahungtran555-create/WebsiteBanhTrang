@@ -16,19 +16,19 @@ function generateSlug(title: string): string {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const {
-      title,
-      excerpt,
-      content,
-      coverImage,
-      tags,
-      slug: providedSlug,
-      seoTitle,
-      seoDescription,
-      seoKeyword,
-    } = body;
 
-    // Validation
+    // Tự động xử lý nếu n8n gửi sai tên trường (viết thường coverimage -> coverImage)
+    const title = body.title;
+    const content = body.content;
+    const excerpt = body.excerpt || '';
+    const coverImage = body.coverImage || body.coverimage || ''; // Chấp nhận cả 2 cách viết
+    const providedSlug = body.slug;
+    const seoTitle = body.seoTitle;
+    const seoDescription = body.seoDescription;
+    const seoKeyword = body.seoKeyword;
+    const rawTags = body.tags;
+
+    // 1. Validation cơ bản
     if (!title || !content) {
       return NextResponse.json(
         { error: 'Tiêu đề (title) và nội dung (content) là bắt buộc.' },
@@ -38,22 +38,31 @@ export async function POST(request: Request) {
 
     const slug = providedSlug || generateSlug(title);
 
-    // Filter and sanitize tags if they are provided
-    const processedTags = Array.isArray(tags) 
-      ? tags.map((t: string) => t.trim()).filter(Boolean)
-      : (typeof tags === 'string' ? tags.split(',').map((t: string) => t.trim()).filter(Boolean) : []);
+    // 2. Xử lý Tags (Biến chuỗi thành Mảng chuẩn cho Prisma)
+    let processedTags: string[] = [];
+    if (Array.isArray(rawTags)) {
+      processedTags = rawTags.map((t: any) => String(t).trim()).filter(Boolean);
+    } else if (typeof rawTags === 'string') {
+      // Nếu n8n gửi "[tag1, tag2]" dưới dạng string, code này sẽ bóc tách ra
+      processedTags = rawTags
+        .replace(/[\[\]"]/g, '') // Xóa dấu ngoặc vuông và ngoặc kép nếu có
+        .split(',')
+        .map((t: string) => t.trim())
+        .filter(Boolean);
+    }
 
+    // 3. Tạo bài viết trong Database
     const newPost = await prisma.post.create({
       data: {
         title,
         slug,
-        excerpt: excerpt || '',
+        excerpt: String(excerpt),
         content,
-        coverImage: coverImage || '',
+        coverImage: String(coverImage),
         tags: processedTags,
-        seoTitle: seoTitle || null,
-        seoDescription: seoDescription || null,
-        seoKeyword: seoKeyword || null,
+        seoTitle: seoTitle ? String(seoTitle) : null,
+        seoDescription: seoDescription ? String(seoDescription) : null,
+        seoKeyword: seoKeyword ? String(seoKeyword) : null,
       },
     });
 
@@ -63,17 +72,16 @@ export async function POST(request: Request) {
     );
   } catch (error: any) {
     console.error('Error creating post via API:', error);
-    
-    // Check for unique constraint violation on slug
+
     if (error.code === 'P2002') {
       return NextResponse.json(
-        { error: 'Slug đã tồn tại. Vui lòng cung cấp tiêu đề khác hoặc slug duy nhất.' },
+        { error: 'Slug đã tồn tại.' },
         { status: 409 }
       );
     }
 
     return NextResponse.json(
-      { error: 'Đã xảy ra lỗi khi tạo bài viết.', details: error.message },
+      { error: 'Lỗi Server.', details: error.message },
       { status: 500 }
     );
   }
