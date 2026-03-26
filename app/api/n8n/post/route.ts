@@ -59,7 +59,12 @@ export async function POST(request: Request) {
 
   try {
     rawText = await request.text();
-    body = JSON.parse(rawText) as Record<string, unknown>;
+    const parsed = JSON.parse(rawText) as Record<string, unknown>;
+    // Fix: n8n "Using Fields Below" gửi tên trường có trailing space ("tags ", "seoKeyword ")
+    // Normalize tất cả keys bằng cách trim whitespace
+    for (const [key, value] of Object.entries(parsed)) {
+      body[key.trim()] = value;
+    }
   } catch {
     return NextResponse.json(
       { error: 'Body không phải JSON hợp lệ.', version: API_VERSION },
