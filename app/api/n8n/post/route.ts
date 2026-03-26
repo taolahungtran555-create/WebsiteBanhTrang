@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
+
 
 const API_VERSION = 'v3.0'; // Tăng version mỗi lần deploy để kiểm tra
 
@@ -105,6 +107,10 @@ export async function POST(request: Request) {
         seoKeyword: seoKeyword || null,
       },
     });
+
+    // Làm mới cache của trang tin-tức và trang chủ
+    revalidatePath('/tin-tuc');
+    revalidatePath('/');
 
     return NextResponse.json({
       message: 'Tạo bài viết thành công.',

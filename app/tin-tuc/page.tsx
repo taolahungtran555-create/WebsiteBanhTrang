@@ -3,6 +3,8 @@ import Image from "next/image";
 import type { Metadata } from 'next';
 import BlogCard from "@/components/ui/BlogCard";
 
+export const dynamic = 'force-dynamic'; // Luôn fetch data mới từ DB
+
 export const metadata: Metadata = {
   title: 'Blog Review & Tin Tức Bánh Tráng Trộn Ngon Cần Thơ',
   description: 'Tổng hợp chia sẻ, review đánh giá các loại bánh tráng trộn ngon nhất tại Cần Thơ. Kiến thức 100% hữu ích cho tín đồ ăn vặt.',
