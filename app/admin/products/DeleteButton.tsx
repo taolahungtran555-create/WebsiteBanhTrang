@@ -3,6 +3,7 @@
 import { useTransition } from 'react';
 import { deleteProduct } from './actions';
 import { Trash2 } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function DeleteButton({ id }: { id: number }) {
   const [isPending, startTransition] = useTransition();
@@ -22,7 +23,7 @@ export default function DeleteButton({ id }: { id: number }) {
       className={`text-red-600 hover:text-red-900 ${isPending ? 'opacity-50 cursor-not-allowed' : ''}`}
       aria-label="Delete product"
     >
-      <Trash2 size={20} />
+      {isPending ? <LoadingSpinner fullScreen={true} text="Đang xoá sản phẩm..." /> : <Trash2 size={20} />}
     </button>
   );
 }

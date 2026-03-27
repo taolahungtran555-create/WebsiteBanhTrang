@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 interface OrderStatusDropdownProps {
   orderId: number;
@@ -43,17 +44,20 @@ export default function OrderStatusDropdown({ orderId, currentStatus }: OrderSta
   const currentOption = statusOptions.find((o) => o.value === status);
 
   return (
-    <select
-      value={status}
-      onChange={(e) => handleChange(e.target.value)}
-      disabled={isUpdating}
-      className={`text-xs font-medium px-2.5 py-1.5 rounded-full border-0 cursor-pointer focus:ring-2 focus:ring-[#FE5200] transition-all disabled:opacity-50 ${currentOption?.color || 'bg-gray-100 text-gray-800'}`}
-    >
-      {statusOptions.map((opt) => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
+    <>
+      {isUpdating && <LoadingSpinner fullScreen={true} text="Đang cập nhật..." />}
+      <select
+        value={status}
+        onChange={(e) => handleChange(e.target.value)}
+        disabled={isUpdating}
+        className={`text-xs font-medium px-2.5 py-1.5 rounded-full border-0 cursor-pointer focus:ring-2 focus:ring-[#FE5200] transition-all disabled:opacity-50 ${currentOption?.color || 'bg-gray-100 text-gray-800'}`}
+      >
+        {statusOptions.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+    </>
   );
 }

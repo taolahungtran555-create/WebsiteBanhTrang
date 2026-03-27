@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { ArrowLeft, Upload, Loader2, Save } from 'lucide-react';
 import Link from 'next/link';
 import { updateLandingPage } from './actions';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 type LandingPageData = {
   heroTitle: string;
@@ -95,6 +96,7 @@ export default function LandingPageForm({ initialData }: { initialData: LandingP
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {isPending && <LoadingSpinner text="Đang lưu cài đặt..." />}
       {/* Hidden inputs to make sure the Server Action gets the updated state (especially image URLs) */}
       <input type="hidden" name="heroBgImage" value={formData.heroBgImage} />
       <input type="hidden" name="aboutImage" value={formData.aboutImage} />

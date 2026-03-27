@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Save, Upload, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { createProduct, updateProduct } from './actions';
 import Image from 'next/image';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 type MenuItem = {
   id?: number;
@@ -125,6 +126,7 @@ export default function ProductForm({ initialData }: { initialData?: MenuItem })
 
   return (
     <div className="pt-24 pb-10">
+      {isLoading && <LoadingSpinner text="Đang lưu sản phẩm..." />}
       <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
         <div className="mb-6 flex items-center">
           <Link href="/admin/products" className="mr-4 text-gray-500 hover:text-gray-900 transition-colors">
