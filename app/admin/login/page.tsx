@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { loginAdmin } from '../actions';
 import { useRouter } from 'next/navigation';
 import { LogIn } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function AdminLoginPage() {
   const [error, setError] = useState('');
@@ -34,6 +35,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      {isLoading && <LoadingSpinner fullScreen={true} text="Đang xác thực..." />}
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
         <div>
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FFB200]/10">

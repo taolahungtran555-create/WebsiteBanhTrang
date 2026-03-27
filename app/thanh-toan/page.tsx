@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useCart } from '@/lib/context/CartContext';
 import { ShoppingCart, MapPin, Phone, User, FileText, CheckCircle, ArrowLeft, Package } from 'lucide-react';
 import Link from 'next/link';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function CheckoutPage() {
   const { cart, totalPrice, totalItems, clearCart } = useCart();
@@ -129,6 +130,8 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-20">
+      {/* Branded spinner overlay khi đang đặt hàng */}
+      {isSubmitting && <LoadingSpinner text="Đang đặt hàng..." />}
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Title */}
         <div className="mb-8">

@@ -8,6 +8,7 @@ import { createPost, updatePost } from './actions';
 import Image from 'next/image';
 import SeoMetaBox from '@/components/admin/SeoMetaBox';
 import SeoAnalyzer from './SeoAnalyzer';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 const RichTextEditor = dynamic(() => import('@/components/admin/RichTextEditor'), { ssr: false });
 
@@ -153,6 +154,7 @@ export default function PostForm({ initialData }: { initialData?: Post }) {
 
   return (
     <div className="pt-24 pb-10">
+      {isLoading && <LoadingSpinner text="Đang lưu bài viết..." />}
       <div className="max-w-4xl mx-auto sm:px-6 lg:px-8">
         {/* ... existing header ... */}
         <div className="mb-6 flex items-center">
