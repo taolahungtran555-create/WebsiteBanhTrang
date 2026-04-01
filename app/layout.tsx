@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: 'Bánh Tráng Trộn Ngon Cần Thơ | Ship Tận Nơi',
     description: 'Thưởng thức bánh tráng trộn chuẩn vị ngon nhất tại Cần Thơ.',
     url: 'https://banhtrangtron.vercel.app',
-    siteName: 'food',
+    siteName: 'Bánh Tráng Trộn Ngon Cần Thơ',
     images: [
       {
         url: 'https://banhtrangtron.vercel.app/logo.jpg',
@@ -87,13 +87,13 @@ export default async function RootLayout({
               {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
-                "name": "food",
+                "name": "Bánh Tráng Trộn Ngon Cần Thơ",
                 "url": "https://banhtrangtron.vercel.app"
               },
               {
                 "@context": "https://schema.org",
                 "@type": "LocalBusiness",
-                "name": "food",
+                "name": "Bánh Tráng Trộn Ngon Cần Thơ",
                 "image": "https://banhtrangtron.vercel.app/logo.jpg",
                 "logo": "https://banhtrangtron.vercel.app/logo.jpg",
                 "@id": "https://banhtrangtron.vercel.app",
