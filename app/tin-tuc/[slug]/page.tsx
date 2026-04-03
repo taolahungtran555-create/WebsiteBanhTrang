@@ -51,7 +51,7 @@ export async function generateMetadata(
     title: metaTitle,
     description: metaDescription,
     alternates: {
-      canonical: `https://banhtrangtronngoncantho.vn/tin-tuc/${slug}`,
+      canonical: `https://banhtrangtron.vercel.app/tin-tuc/${slug}`,
     }
   };
 }
@@ -109,7 +109,7 @@ export default async function BlogPost({ params }: any) {
             "author": [{
               "@type": "Person",
               "name": "Bánh Tráng Trộn Ngon Cần Thơ",
-              "url": "https://banhtrangtronngoncantho.vn"
+              "url": "https://banhtrangtron.vercel.app"
             }]
           })
         }}
