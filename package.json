@@ -10,6 +10,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@next/third-parties": "^16.2.2",
     "@prisma/client": "^6.4.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tiptap/extension-font-family": "^3.20.4",
