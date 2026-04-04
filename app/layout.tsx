@@ -21,6 +21,7 @@ const beVietnamPro = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://banhtrangtron.vercel.app'),
   title: 'Bánh Tráng Trộn Ngon Cần Thơ | Ship Tận Nơi Đỉnh Nhất',
   description: 'Thưởng thức bánh tráng trộn chuẩn vị ngon nhất tại Cần Thơ. Menu đa dạng, gia vị đậm đà, nhận ship hàng tận nơi nhanh chóng trong khu vực Ninh Kiều.',
   keywords: 'bánh tráng trộn ngon Cần Thơ, bánh tráng trộn Cần Thơ, ship bánh tráng trộn Cần Thơ, quán bánh tráng trộn Cần Thơ',
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     siteName: 'Bánh Tráng Trộn Ngon Cần Thơ',
     images: [
       {
-        url: 'https://banhtrangtron.vercel.app/logo.jpg',
+        url: '/logo-og.jpg',
         width: 1200,
         height: 630,
       },
@@ -40,9 +41,12 @@ export const metadata: Metadata = {
     type: 'website',
   },
   icons: {
-    icon: '/logo.jpg',
-    shortcut: '/logo.jpg',
-    apple: '/logo.jpg',
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/logo-small.jpg', sizes: '192x192', type: 'image/jpeg' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/logo-small.jpg',
   },
 };
 
