@@ -66,6 +66,9 @@ export default async function RootLayout({
 
   return (
     <html lang="vi">
+      <head>
+        <meta name="google-site-verification" content="1b_EDppXLq_61gN-_pDf9wSPggqm_JUq60kP7gv5ZiQ" />
+      </head>
       <body className={`${inter.variable} ${poppins.variable} ${beVietnamPro.variable} min-h-screen flex flex-col`} style={{ fontFamily: 'Inter, sans-serif' }}>
         <CartProvider>
           <Header phone={heroPhone} />
